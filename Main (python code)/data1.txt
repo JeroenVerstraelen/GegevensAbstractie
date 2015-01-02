@@ -1,0 +1,36 @@
+# This movietheatre data file has to be formatted according to specific 
+# rules. Please follow the format indicated at each section, and don't 
+# remove the section start and end (in caps), even when the section is 
+# empty.
+# Nothing except data should be placed in the sections.
+
+#######################################################################
+# film format: title,rating
+FILMS
+metropolis,9
+Seven Samurai,8
+Full Metal Jacket,9.5
+END FILMS
+
+#######################################################################
+# showing format: screenID,slotID,year,month,day,filmID
+SHOWINGS
+1,1,2014,12,25,2
+END SHOWINGS
+
+#######################################################################
+# screen format: #seats
+SCREENS
+100
+150
+200
+END SCREENS
+
+#######################################################################
+# slot format: hour,minutes
+SLOTS
+14,30
+17,00
+20,00
+21,30
+END SLOTS
