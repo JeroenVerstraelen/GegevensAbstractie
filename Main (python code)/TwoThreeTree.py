@@ -1,6 +1,22 @@
 class TwoThreeTree:
+    ''' Represents the shell of a 2-3-Tree.
+  
+    Acts as a shell containing a pointer to the root (of type Node).
+    Traversing the root and all its children represents a 2-3-Tree.
+    Each Node in the tree is linked to this shell.
+    '''
 
     class Node:
+        '''  Represents a Node in a 2-3-Tree.
+
+        Instance variables:
+            tree      The instance of type 'TwoThreeTree' that the node is linked to.
+            vals[]    Contains the objects inside the node (static size: 3).
+            links[]   Contains the children of the node (static size: 4).
+                      Children follow the order: 
+                      small, smallMid, mid, large
+                      Where smallMid is only used during an insertion.
+        '''
     
         def __init__(self, tree, vals=[None, None, None], p=None, links=[None, None, None, None]):
             self.tree = tree
@@ -9,11 +25,13 @@ class TwoThreeTree:
             self.links = links
     
         def destroy(self):
+            ''' Resets the Instance variables inside the node. '''
             self.vals = [None, None, None]
             self.parent = None
             self.links = [None, None, None, None]
     
         def destroyAll(self):
+            ''' Invokes 'destroy' on this Node and all its children. '''
             if self.links[0] == None:
                 self.destroy()
             elif self.getSize() == 2:
@@ -30,6 +48,7 @@ class TwoThreeTree:
                     v.destroy()
     
         def getSize(self):
+            ''' Returns the amount of values/instances contained by this Node. '''
             size = 0
             for v in self.vals:
                 if not v == None:
@@ -37,9 +56,16 @@ class TwoThreeTree:
             return size
     
         def contains(self, value):
+            ''' Returns 'True' if this Node contains 'value'. '''
             return value in self.vals
     
         def inorder(self):
+            ''' Returns an array of these values in order.
+
+            Returns an array of all the values/instances contained by
+            this Node and all its children in order.
+            '''
+
             a = []
             if self.links[0] == None:
                 for v in self.vals:
@@ -58,6 +84,12 @@ class TwoThreeTree:
             return a
     
         def retrieveItem(self, searchKey):
+            ''' Returns the instance linked with the searchKey.
+
+            Returns None if the Node and all its children do
+            not contain the searchKey.
+            '''
+
             for v in self.vals:
                 if v == searchKey:
                     return v
@@ -74,6 +106,7 @@ class TwoThreeTree:
             return self.links[3].retrieveItem(searchKey, treeItem)
     
         def insertItem(self, item):
+            ''' Inserts an item into a 2-3-Tree using this node as root. '''
             if self.getSize() == 0:                                 # If the node of self has 0 elements.
                 self.vals = [None, item, None]
                 return
@@ -96,6 +129,7 @@ class TwoThreeTree:
             self.links[3].insertItem(item)  
     
         def insertInNode(self, item):
+            ''' Inserts an item in this Node. '''
             if self.getSize() == 0:
                 self.vals = [None, item, None]    
             elif self.getSize() == 1: 
@@ -115,6 +149,7 @@ class TwoThreeTree:
                 self.split()
     
         def split(self):
+            ''' Splits the node and rearranges the values. '''
             isLeaf = False
             if self.links[0] == None:
                 isLeaf = True
@@ -171,6 +206,7 @@ class TwoThreeTree:
             p.insertInNode(middle) 
     
         def getNode(self, searchKey):
+            ''' Returns the Node instance that contains an instance linked to the searchKey. '''
             for i in range(3):
                 if self.vals[i] == searchKey:
                     return (self, i)
@@ -187,6 +223,7 @@ class TwoThreeTree:
             return self.links[3].getNode(searchKey)      
     
         def getSuccesor(self, searchKey):
+            ''' Returns a double containing the Node that contains the successor and its index. '''
             if self.links[0] == None:
                 for i in range(3):
                     if not self.vals[i] == None and self.vals[i] > searchKey:
@@ -207,6 +244,11 @@ class TwoThreeTree:
     
     
         def deleteItem(self, searchKey):
+            ''' Deletes item value/instances linked with searchKey.
+
+            Returns True if succesfull, False otherwise.
+            '''
+
             n = self.getNode(searchKey)                     # n[0] = node, n[1] = i where n[0].vals[i] == searchKey. 
             s = (None, 0)
             leafNode = n[0]
@@ -232,6 +274,7 @@ class TwoThreeTree:
             return False
     
         def fix(self):
+            ''' Fixes the Node if it contains no values after an deleteItem invokation. '''
             if self.parent == None:                         # If self is the root.
                 if not self.links[0] == None:
                     self.tree.root = self.links[0]
@@ -275,6 +318,7 @@ class TwoThreeTree:
                             self.merge(p.links[0], 0)
                    
         def merge(self, adjecent, adjlink):
+            ''' Merges nodes in the tree after an deleteItem invokation. '''
             p = self.parent
             p_item = 0
             if p.getSize() == 1:
@@ -339,7 +383,8 @@ class TwoThreeTree:
             if adjecent.parent.vals == [None, None, None]:
                 adjecent.parent.fix()            
     
-        def redistribute(self, sibling, siblink):       
+        def redistribute(self, sibling, siblink):  
+            ''' Redistributes the links in the tree after an deleteItem invokation. '''     
             p, p_change, sib_vals = self.parent, None, [sibling.vals[0], sibling.vals[1], sibling.vals[2]]
     
             if p.getSize() == 1:                            # If parent has 1 element.
@@ -402,32 +447,38 @@ class TwoThreeTree:
         self.height = 1
 
     def createTree(self):
+        ''' Empty method that follows contract. '''
         pass
 
     def destroyTree(self):
+        ''' Resets all the Nodes in the tree. '''
         self.root.destroyAll()
 
     def treeIsEmpty(self):
+        ''' Returns True if the tree is empty. '''
         if self.root.vals == [None, None, None]:
             return True
         return False
 
     def treeLength(self):
+        ''' Returns the height of the tree. '''
         if self.treeIsEmpty():
             return 0
         return self.height
 
     def insertItem(self, newItem):
+        ''' Inserts an item in the tree. '''
         self.root.insertItem(newItem)
 
     def deleteItem(self, searchKey):
+        ''' Deletes an item from the tree. '''
         self.root.deleteItem(searchKey)
 
     def retrieveItem(self, searchKey):
+        ''' Returns an item from the tree linked with the searchKey, returns None if searchKey is not found. '''
         return self.root.retrieveItem(searchKey)
 
     def traverse(self):
+        ''' Returns an array of the items in the tree, in order. '''
         return self.root.inorder()
-
-
 

@@ -95,9 +95,9 @@ class Table:
         elif self.implementation == "redBlackTree":
             return self.pointer.search(searchKey)
         elif self.implementation == "234Tree":
-            self.pointer.retrieve(searchKey)
+            return self.pointer.retrieve(searchKey)
         elif self.implementation == "23Tree":
-            self.pointer.retrieveItem(searchKey)
+            return self.pointer.retrieveItem(searchKey)
 
     def traverseTable(self):
         if self.implementation == "binaryTree":
