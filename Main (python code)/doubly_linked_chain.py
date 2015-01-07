@@ -92,5 +92,5 @@ class Doubly_linked_chain:
         while tmpNode.searchKey != None:
             tmpList.append(tmpNode.searchKey)
             tmpNode = tmpNode.next
-        return tmpList
+        return tmpList[::-1]
 

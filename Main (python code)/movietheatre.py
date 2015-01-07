@@ -18,7 +18,7 @@ class Movietheatre:
 
         # Tables (Showing and Film)
         self.showing_table = Table()
-        self.showing_table.setImplementation("binaryTree")
+        self.showing_table.setImplementation("hashmap")
         self.showing_table.createTable()
 
         self.film_table = Table()
@@ -114,6 +114,8 @@ class Movietheatre:
         self.reservationQueue.enqueue(reservation)
         pr_res = self.reservationQueue.dequeue()
         showing = self.getShowing(showingID)
+        if len(self.users) <= userID or not showing:
+            return False
         self.reservation_table.tableInsert(reservation)
         if showing != None:
             if showing.getFreeSeats() - amount > 0:

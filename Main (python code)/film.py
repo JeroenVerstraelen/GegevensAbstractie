@@ -43,3 +43,6 @@ class Film:
    
     def __ge__(self, other):
         return self.ID >= other
+
+    def __mod__(self, other):
+        return self.ID % other

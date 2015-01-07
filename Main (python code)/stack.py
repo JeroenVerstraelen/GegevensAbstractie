@@ -33,7 +33,7 @@ class Stack:
 
         def push(self, value):
             ''' Pushes a node with 'value' on top of this Node. '''
-            self.links[1] = Node(value)
+            self.links[1] = Stack.Node(value)
             return self.links[1]
 
         def pop(self):
