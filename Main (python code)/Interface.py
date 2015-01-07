@@ -34,7 +34,7 @@ def create_user():
     email = input("Please enter your e-mail: ")
     userID = len(theatre.listUsers())
     theatre.addUser(userID, firstname, lastname, email)
-    print("User created. Your userID is "+str(userID))
+    print("User created. Your userID is "+str(userID)+".")
     print("Press enter to return")
     input("")
 

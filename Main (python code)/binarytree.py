@@ -25,6 +25,7 @@ class Node:
 
     def getData(self):
         """ Returns the data in the node. """
+        print(self.data)
         return self.data
 
     def setData(self, data):
@@ -105,7 +106,7 @@ class BinTree:
         return False
 
     def getData(self, searchkey):
-        """ searches for a node with the given search key and returns it's data """
+        """ searches for a node with the given search key and returns its data """
         subtree = self.search(searchkey)
         if subtree:
             return subtree.root.getData()

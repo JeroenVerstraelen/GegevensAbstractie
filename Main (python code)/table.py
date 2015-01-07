@@ -4,7 +4,7 @@ from doubly_linked_chain import *
 from hashmap import *
 from redblack_tree import *
 from tree_234 import *
-from TwoThreeTree import * 
+from twothreetree import * 
 
 
 class Table:

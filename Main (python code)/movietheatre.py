@@ -18,7 +18,7 @@ class Movietheatre:
 
         # Tables (Showing and Film)
         self.showing_table = Table()
-        self.showing_table.setImplementation("doublylinkedchain")
+        self.showing_table.setImplementation("binaryTree")
         self.showing_table.createTable()
 
         self.film_table = Table()
@@ -50,13 +50,13 @@ class Movietheatre:
         f4 = self.addFilm(4, "V for vendetta", 9.85)
 
         self.addShowing(0, self.screens[0].getScreenNumber(), 
-        self.slots[2], date(2014,12,25), f2.getID())
+        self.slots[2], date(2015,12,25), f2.getID())
 
         self.addShowing(1, self.screens[1].getScreenNumber(), 
-        self.slots[3], date(2014,12,25), f1.getID())
+        self.slots[3], date(2015,12,25), f1.getID())
 
         self.addShowing(2, self.screens[1].getScreenNumber(), 
-        self.slots[3], date(2014,12,26), f4.getID())
+        self.slots[3], date(2015,12,26), f4.getID())
 
     def addScreen(self, screennumber, seats):
         screen = Screen()
@@ -112,7 +112,8 @@ class Movietheatre:
         pr_res = self.reservationQueue.dequeue()
         showing = self.getShowing(showingID)
         self.reservation_table.tableInsert(reservation)
-        if showing.getFreeSeats() - amount > 0:
+        print(showing.getFreeSeats())
+        if showing != None and showing.getFreeSeats() - amount > 0:
             return showing.reserve(amount)
         return False
 		
@@ -123,6 +124,9 @@ class Movietheatre:
        return self.showing_table.traverseTable()
    
     def getShowing(self, showingID):
+       print(self.showing_table.traverseTable())      
+       print(showingID)
+       print(self.showing_table.tableRetrieve(showingID))
        return self.showing_table.tableRetrieve(showingID)
 
     def removeShowing(self, showingID):
