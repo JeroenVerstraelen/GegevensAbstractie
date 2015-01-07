@@ -52,7 +52,8 @@ class Showing:
         return self.freeseats
 		
     def getTickets(self):
-	    return len(self.tickets)
+        ''' Returns a pointer to the Stack containing the tickets. '''
+        return self.tickets
 
     def isStarted(self):
         if not self.date == None and not self.timeSlot == None:
@@ -72,15 +73,19 @@ class Showing:
                     if not self.tickets.push(ticket):
                        return False
                     self.freeseats -= 1
-                return True   
+                return True 
+            print("This showing has already started, you can no longer make a reservation.")  
         return False 
        
     def checkIn(self):
         if not self.date == None and not self.timeSlot == None:
-            if self.tickets.pop():
-                if self.tickets.isEmpty():
-                    self.empty_ts = datetime.now()
+            if not self.tickets.isEmpty():
+                if self.tickets.pop():
+                    if self.tickets.isEmpty():
+                        self.empty_ts = datetime.now()
                 return True
+            print("\nI'm sorry, there are no more reservations left. Press enter to return")
+            input("")
         return False
         
 

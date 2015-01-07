@@ -25,7 +25,6 @@ class Node:
 
     def getData(self):
         """ Returns the data in the node. """
-        print(self.data)
         return self.data
 
     def setData(self, data):
@@ -35,7 +34,6 @@ class Node:
     def getKey(self):
         """ Returns the search key of the node. """
         return self.key
-
 
 class BinTree:
     """ Represents the ADT binary tree """
@@ -109,7 +107,7 @@ class BinTree:
         """ searches for a node with the given search key and returns its data """
         subtree = self.search(searchkey)
         if subtree:
-            return subtree.root.getData()
+            return subtree.root.getKey()
         return False
 
     def getLeftSubtree(self):

@@ -89,17 +89,20 @@ class Movietheatre:
             return film
         return False
 
-    def addShowing(self, showID, screenID, timeSlot, date, filmID):
+    def addShowing(self, showID, screenID, tID, date, filmID):
         showing = Showing()
-        showing.setID(showID)
-        showing.setScreenID(screenID)
-        showing.setTimeSlot(timeSlot)
-        showing.setDate(date)
-        showing.setFilmID(filmID)
-        screen = self.screens[int(screenID)]
-        showing.setFreeSeats(screen.getSeats())
-        if self.showing_table.tableInsert(showing):
-            return True
+        if (len(self.screens) > screenID and len(self.slots) > tID and
+            self.film_table.tableRetrieve(filmID)):
+            showing.setID(showID)
+            showing.setScreenID(screenID)
+            timeslot = self.slots[tID]
+            showing.setTimeSlot(timeslot)
+            showing.setDate(date)
+            showing.setFilmID(filmID)
+            screen = self.screens[int(screenID)]
+            showing.setFreeSeats(screen.getSeats())
+            if self.showing_table.tableInsert(showing):
+                return True
         return False
 
     def makeReservation(self, reservationID, userID, showingID, amount):
@@ -112,9 +115,11 @@ class Movietheatre:
         pr_res = self.reservationQueue.dequeue()
         showing = self.getShowing(showingID)
         self.reservation_table.tableInsert(reservation)
-        print(showing.getFreeSeats())
-        if showing != None and showing.getFreeSeats() - amount > 0:
-            return showing.reserve(amount)
+        if showing != None:
+            if showing.getFreeSeats() - amount > 0:
+                return showing.reserve(amount)
+            print("I'm sorry, there are not enough free seats in this showing ("+str(showing.getFreeSeats())+").")
+        print("We don't know a showing with this ID.")
         return False
 		
     def checkIn(self, showingID):
@@ -124,9 +129,6 @@ class Movietheatre:
        return self.showing_table.traverseTable()
    
     def getShowing(self, showingID):
-       print(self.showing_table.traverseTable())      
-       print(showingID)
-       print(self.showing_table.tableRetrieve(showingID))
        return self.showing_table.tableRetrieve(showingID)
 
     def removeShowing(self, showingID):

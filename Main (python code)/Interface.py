@@ -47,37 +47,41 @@ def create_film():
     if theatre.addFilm(filmID, title, rating):
         print("Film Added. press enter to return")
     else:
-        print("Couldn't add film. press enter to return")
+        print("Film could not be created. press enter to return")
     input("")
 
 def create_showing():
     ''' Asks for input and creates a showing '''
     print("** adding a new showing ***********")
-    screenID = input("Please enter the screenID: ")
-    timeslot = input("Please choose the timeslot: ")
-    filmID = input("Please enter the filmID: ")
-    day = input("Please enter the day of the month: ")
+    screenID = int(input("Please enter the screenID: "))
+    timeslotID = int(input("Please enter the timeslotID: "))
+    filmID = int(input("Please enter the filmID: "))
+    day = int(input("Please enter the day of the month: "))
     month = input("Please enter the month (numeric): ")
     year = input("Please enter the year: ")
     date1 = date(int(year), int(month), int(day))
     showingID = len(theatre.listShowings())
-    if theatre.addShowing(int(showingID), screenID, timeslot, date1, filmID):
+    if theatre.addShowing(int(showingID), screenID, timeslotID, date1, filmID):
         print("Showing added. press enter to return")
     else:
-        print("Couldn't add showing. press enter to return")
+        print("Showing could not be created. press enter to return")
     input("")
 
 def checkin():
     ''' get a showing ID and check in viewers for that showing '''
     print("** checking in ********************")
-    showingID = int(input("Please input the showing ID "))
-    answer = "y"
-    while answer == "y":
-        clear()
-        print("Now checking in for showing with ID: ",showingID)
-        print(" there are ", getTickets(showingID), "tickets still not checked in.\n")
-        answer = input("type 'y' to check in a viewer, any other key to stop checking in: ")
-        theatre.checkIn(showingID)
+    showingID = int(input("Please input the showing ID: "))
+    showing = theatre.getShowing(showingID)
+    if showing != None:
+        answer = "y"
+        while answer == "y":
+            clear()
+            print("Now checking in for showing with ID: ",showingID)
+            answer = input("type 'y' to check in a viewer, any other key to stop checking in: ")
+            if not theatre.checkIn(showingID):
+                break
+    else:
+        print("I'm sorry, we don't know a showing with this ID.")
 
 def reservationmenu():
     ''' shows reservation menu, executes chozen input '''
