@@ -50,13 +50,13 @@ class Movietheatre:
         f4 = self.addFilm(4, "V for vendetta", 9.85)
 
         self.addShowing(0, self.screens[0].getScreenNumber(), 
-        self.slots[2], date(2015,12,25), f2.getID())
+        2, date(2015,12,25), f2.getID())
 
         self.addShowing(1, self.screens[1].getScreenNumber(), 
-        self.slots[3], date(2015,12,25), f1.getID())
+        3, date(2015,12,25), f1.getID())
 
         self.addShowing(2, self.screens[1].getScreenNumber(), 
-        self.slots[3], date(2015,12,26), f4.getID())
+        3, date(2015,12,26), f4.getID())
 
     def addScreen(self, screennumber, seats):
         screen = Screen()

@@ -68,7 +68,8 @@ class Stack:
         if self.top != None:        
             self.top = self.top.push(newItem)
         else:
-            self.top = Node(newItem)
+            self.top = Stack.Node(newItem)
+        return True
 
     def pop(self):
         '''Deletes the item on the top of the Stack.'''

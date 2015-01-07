@@ -92,7 +92,7 @@ class Redblacktree:
         if node.key == key: return node    #only return the node if the keys match
         else: return None
     
-    def insert(self,key):
+    def insert(self,key,item):
         '''
         inserts an item in the tree and restores the properties of a red-black tree after
         '''

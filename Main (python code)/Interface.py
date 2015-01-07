@@ -42,7 +42,12 @@ def create_film():
     ''' Asks for input and creates a film '''
     print("** adding a new film ***********")
     title = input("Please enter the title: ")
-    rating = input("Please enter a rating: ")
+    while True: 
+        try:
+            rating = float(input("Please enter a rating: "))
+            break
+        except ValueError:
+            continue
     filmID = len(theatre.listFilms())
     if theatre.addFilm(filmID, title, rating):
         print("Film Added. press enter to return")
@@ -53,15 +58,22 @@ def create_film():
 def create_showing():
     ''' Asks for input and creates a showing '''
     print("** adding a new showing ***********")
-    screenID = int(input("Please enter the screenID: "))
-    timeslotID = int(input("Please enter the timeslotID: "))
-    filmID = int(input("Please enter the filmID: "))
-    day = int(input("Please enter the day of the month: "))
-    month = input("Please enter the month (numeric): ")
-    year = input("Please enter the year: ")
-    date1 = date(int(year), int(month), int(day))
-    showingID = len(theatre.listShowings())
-    if theatre.addShowing(int(showingID), screenID, timeslotID, date1, filmID):
+    while True: 
+        try:
+            screenID = int(input("Please enter the screenID: "))
+            timeslotID = int(input("Please enter the timeslotID: "))
+            filmID = int(input("Please enter the filmID: "))
+            day = int(input("Please enter the day of the month: "))
+            month = int(input("Please enter the month (numeric): "))
+            year = int(input("Please enter the year: "))
+            if day > 0 and day < 31 and month > 0 and month < 13 and year > 0:
+                date1 = date(year, month, day)
+                showingID = len(theatre.listShowings())
+                break
+            continue
+        except ValueError:
+            continue
+    if theatre.addShowing(showingID, screenID, timeslotID, date1, filmID):
         print("Showing added. press enter to return")
     else:
         print("Showing could not be created. press enter to return")
@@ -94,19 +106,22 @@ def reservationmenu():
         print(" 2. Reserve for new user")
         print(" 3. List users")
         choice = input("\n> ")
-        if int(choice) == 0: return True
-        elif int(choice) == 1:
-            create_reservation()
-        elif int(choice) == 2:
-            create_user()
-            create_reservation()
-        elif int(choice) == 3:
-            if len(theatre.listUsers()) == 0:
-                print("No users available.")
-            else:
-                for user in theatre.listUsers():
-                    print(user)
-            input("\nPress enter to continue")
+        try:
+            if int(choice) == 0: return True
+            elif int(choice) == 1:
+                create_reservation()
+            elif int(choice) == 2:
+                create_user()
+                create_reservation()
+            elif int(choice) == 3:
+                if len(theatre.listUsers()) == 0:
+                    print("No users available.")
+                else:
+                    for user in theatre.listUsers():
+                        print(user)
+                input("\nPress enter to continue")
+        except ValueError:
+            continue
 
 
 
@@ -120,13 +135,16 @@ def filmsmenu():
         print(" 1. Add a film")
         print(" 2. List films")
         choice = input("\n> ")
-        if int(choice) == 0: return True
-        elif int(choice) == 1:
-            create_film()
-        elif int(choice) == 2:
-            for film in theatre.listFilms():
-                print(film)
-            input("\nPress enter to continue")
+        try:
+            if int(choice) == 0: return True
+            elif int(choice) == 1:
+                create_film()
+            elif int(choice) == 2:
+                for film in theatre.listFilms():
+                    print(film)
+                input("\nPress enter to continue")
+        except ValueError:
+            continue
 
 def showingsmenu():
     ''' prints showing menu, executes chozen input '''
@@ -139,15 +157,18 @@ def showingsmenu():
         print(" 2. List showings")
         print(" 3. check in viewers for a showing")
         choice = input("\n> ")
-        if int(choice) == 0: return True
-        elif int(choice) == 1:
-            create_showing()
-        elif int(choice) == 2:
-            for showing in theatre.listShowings():
-                print(showing)
-            input("\nPress enter to continue")
-        elif int(choice) == 3:
-            checkin()
+        try:
+            if int(choice) == 0: return True
+            elif int(choice) == 1:
+                create_showing()
+            elif int(choice) == 2:
+                for showing in theatre.listShowings():
+                    print(showing)
+                input("\nPress enter to continue")
+            elif int(choice) == 3:
+                checkin()
+        except ValueError:
+            continue
 
 
 def mainmenu():
@@ -161,14 +182,17 @@ def mainmenu():
         print(" 3. Manage films")
         print(" 4. Quit")
         choice = input("\n> ")
-        if int(choice) == 1: 
-            reservationmenu()
-        elif int(choice) == 2: 
-            showingsmenu()
-        elif int(choice) == 3: 
-            filmsmenu()
-        elif int(choice) == 4:
-            return 0
+        try:
+            if int(choice) == 1: 
+                reservationmenu()
+            elif int(choice) == 2: 
+                showingsmenu()
+            elif int(choice) == 3: 
+                filmsmenu()
+            elif int(choice) == 4:
+                return 0
+        except ValueError:
+            continue
         
 
 
