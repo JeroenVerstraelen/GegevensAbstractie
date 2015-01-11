@@ -16,6 +16,9 @@ class Table:
     def setImplementation(self, implementation):
         self.implementation = implementation
 
+    def getImplementation(self):
+        return self.implementation
+
     def createTable(self):
         if self.implementation == "binaryTree":
             self.pointer = BinTree()
@@ -100,7 +103,7 @@ class Table:
             return self.pointer.traverse()
 
     def sortObjectList(self, olist, getter):
-        ''' this function takes lists of objects and getter methodes to sort the
+        ''' this function takes lists of objects and getter methods to sort the
             objects by different properties '''
         def quicksort(lst):
             if len(lst) < 2:

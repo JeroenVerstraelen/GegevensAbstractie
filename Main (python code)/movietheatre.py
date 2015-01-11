@@ -112,6 +112,19 @@ class Movietheatre:
     def removeFilm(self, filmID):
        return self.film_table.tableDelete(filmID)
 
+    def changeFilm(self, implementation):
+       if implementation not in self.implementations:
+           return False
+       items = self.film_table.traverseTable()
+       self.film_table.destroyTable()
+       self.film_table = Table()
+       self.film_table.setImplementation(implementation)
+       self.film_table.createTable()
+       for item in items:
+           self.film_table.tableInsert(item)
+       return True
+
+
     def addShowing(self, showID, screenID, slotID, date, filmID):
         showing = Showing()
         if (len(self.screens) > screenID and len(self.slots) > slotID and
@@ -147,6 +160,22 @@ class Movietheatre:
        for item in items:
            self.showing_table.tableInsert(item)
        return True
+
+    def sortShowing(self, keyType):
+       if self.showing_table.getImplementation() == "doublylinkedchain":
+           if keyType == "Date":
+               sorted = self.showing_table.sortObjectList(self.showing_table.traverseTable(), Showing.getDate)
+           elif keyType == "Slot":
+               sorted = self.showing_table.sortObjectList(self.showing_table.traverseTable(), Showing.getTimeSlot)
+           elif keyType == "Screen":
+               sorted = self.showing_table.sortObjectList(self.showing_table.traverseTable(), Showing.getScreenID)
+           for item in sorted:
+               self.showing_table.tableDelete(item)
+           for item in sorted:
+               self.showing_table.tableInsert(item)
+           return True
+       print("The implementation of showing_table is not doublylinkedchain.", end='')
+       return False
 
     def makeReservation(self, reservationID, userID, showingID, amount):
         reservation = Reservation()

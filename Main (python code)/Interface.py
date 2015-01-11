@@ -70,6 +70,16 @@ def delete_film():
         print("Film could not be removed. press enter to return")       
     input("")
 
+def change_film():
+    ''' Asks for input and changes the implementation of the film_table '''
+    print("** changing film ***********")
+    implementation = input("Please enter the new implementation: ")
+    if theatre.changeFilm(implementation):
+        print("Implementation changed. press enter to return")
+    else:
+        print("Implementation does not exist. press enter to return")
+    input("")    
+
 def create_showing():
     ''' Asks for input and creates a showing '''
     print("** adding a new showing ***********")
@@ -108,6 +118,16 @@ def change_showing():
     else:
         print("Implementation does not exist. press enter to return")
     input("")    
+
+def sort_showing():
+    ''' Asks for input and sorts the showing_table '''
+    print("** sorting showing ***********")
+    keyType = input("Please input the type of the searchKey (Date/Slot/Screen): ")
+    if theatre.sortShowing(keyType):
+        print("Showings sorted. press enter to return")
+    else:
+        print(" Press enter to return")
+    input("")   
 
 def checkin():
     ''' get a showing ID and check in viewers for that showing '''
@@ -169,6 +189,7 @@ def filmsmenu():
         print(" 1. Add a film")
         print(" 2. Delete a film")
         print(" 3. List films")
+        print(" 4. Change Implementation")
         choice = input("\n> ")
         try:
             if int(choice) == 0: return True
@@ -180,6 +201,8 @@ def filmsmenu():
                 for film in theatre.listFilms():
                     print(film)
                 input("\nPress enter to continue")
+            elif int(choice) == 4:
+                change_film()
         except ValueError:
             continue
 
@@ -193,8 +216,9 @@ def showingsmenu():
         print(" 1. Add a showing")
         print(" 2. Remove a showing")
         print(" 3. List showings")
-        print(" 4. check in viewers for a showing")
-        print(" 5. Change implementation")
+        print(" 4. Sort showings")
+        print(" 5. check in viewers for a showing")
+        print(" 6. Change implementation")
         choice = input("\n> ")
         try:
             if int(choice) == 0: return True
@@ -207,8 +231,10 @@ def showingsmenu():
                     print(showing)
                 input("\nPress enter to continue")
             elif int(choice) == 4:
-                checkin()
+                sort_showing()
             elif int(choice) == 5:
+                checkin()
+            elif int(choice) == 6:
                 change_showing()
         except ValueError:
             continue
