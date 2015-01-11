@@ -83,9 +83,11 @@ class Showing:
                 if self.tickets.pop():
                     if self.tickets.isEmpty():
                         self.empty_ts = datetime.now()
-                return True
+                    print("\nYou have succesfully checked in.")
+                    return True
+                print("\nA problem has occured while popping the Stack. ")
+                return False
             print("\nI'm sorry, there are no more reservations left. Press enter to return")
-            input("")
         return False
         
 

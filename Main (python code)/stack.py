@@ -33,18 +33,23 @@ class Stack:
 
         def push(self, value):
             ''' Pushes a node with 'value' on top of this Node. '''
-            self.links[1] = Stack.Node(value)
-            return self.links[1]
+            self.links[1] = Stack.Node(value, [self, None])      # Set the new Node as upper link of self.
+            return self.links[1]                                 # Return the new Node.
 
         def pop(self):
             ''' Removes the Node above this Node and returns its value. '''
-            value = self.links[1].value
-            self.links[1] = None
-            return value
+            prevNode = self.links[0]   
+            if prevNode:                     
+                prevNode.links[1] = None
+            return prevNode
 
         def getLinks(self):
             ''' Returns an array linking to the lower and upper Node. '''
             return self.links
+
+        def getValue(self):
+            ''' Returns the value contained by this Node. '''
+            return self.value
 
     def __init__(self):
         self.top = None
@@ -65,7 +70,7 @@ class Stack:
 
     def push(self, newItem):
         '''Pushes newItem on top of the Stack.'''
-        if self.top != None:        
+        if self.top:        
             self.top = self.top.push(newItem)
         else:
             self.top = Stack.Node(newItem)
@@ -73,21 +78,19 @@ class Stack:
 
     def pop(self):
         '''Deletes the item on the top of the Stack.'''
-        if not self.isEmpty:
-            if self.top.getLinks()[1]:
-                self.top.pop() 
-                return True
-            self.top = None
+        if self.isEmpty() == False:
+            self.top = self.top.pop() 
+            return True
         return False
 
     def pop_r(self):
         '''Deletes the item on the top of the Stack and returns it.'''
-        if self.top.getLinks()[1]:
-            return self.top.pop()
         if self.top:
-            return self.top.value
+            value = self.top.getValue()
+            self.top.pop().getValue()
+            return value
         return None
 
     def getTop(self):
         '''Gets the top of the stack and returns it.'''
-        return self.top.value
+        return self.top.getValue()

@@ -148,6 +148,18 @@ class Movietheatre:
     def listUsers(self):
        return self.users
 
+    def removeUser(self, userID):
+       for u in self.users:
+           if u.getID() == userID:
+               r = u
+               break
+       if r:
+          self.users.remove(r)
+          for i in range(len(self.users)):
+              self.users[i].setID(i)
+          return True
+       return False
+
     def listReservations(self):
        return self.film_table.traverseTable()
 	   

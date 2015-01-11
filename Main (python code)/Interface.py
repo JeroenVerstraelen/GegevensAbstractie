@@ -38,16 +38,21 @@ def create_user():
     print("Press enter to return")
     input("")
 
+def remove_user():
+    ''' Asks for input and removes a user '''
+    print("** removing user ***********")
+    userID = int(input("Please enter the userID: "))
+    if theatre.removeUser(userID):
+        print("User removed. press enter to return")
+    else:
+        print("User could not be removed. press enter to return")
+    input("")  
+
 def create_film():
     ''' Asks for input and creates a film '''
     print("** adding a new film ***********")
     title = input("Please enter the title: ")
-    while True: 
-        try:
-            rating = float(input("Please enter a rating: "))
-            break
-        except ValueError:
-            continue
+    rating = float(input("Please enter a rating: "))
     filmID = len(theatre.listFilms())
     if theatre.addFilm(filmID, title, rating):
         print("Film Added. press enter to return")
@@ -55,24 +60,29 @@ def create_film():
         print("Film could not be created. press enter to return")
     input("")
 
+def delete_film():
+    ''' Asks for input and deletes a film '''
+    print("** Deleting a new film ***********")
+    id = int(input("Please enter the ID of the film: "))
+    if theatre.removeFilm(id):
+        print("Film Removed. press enter to return")
+    else:
+        print("Film could not be removed. press enter to return")       
+    input("")
+
 def create_showing():
     ''' Asks for input and creates a showing '''
     print("** adding a new showing ***********")
-    while True: 
-        try:
-            screenID = int(input("Please enter the screenID: "))
-            timeslotID = int(input("Please enter the timeslotID: "))
-            filmID = int(input("Please enter the filmID: "))
-            day = int(input("Please enter the day of the month: "))
-            month = int(input("Please enter the month (numeric): "))
-            year = int(input("Please enter the year: "))
-            if day > 0 and day < 31 and month > 0 and month < 13 and year > 0:
-                date1 = date(year, month, day)
-                showingID = len(theatre.listShowings())
-                break
-            continue
-        except ValueError:
-            continue
+    screenID = int(input("Please enter the screenID: "))
+    timeslotID = int(input("Please enter the timeslotID: "))
+    filmID = int(input("Please enter the filmID: "))
+    day = int(input("Please enter the day of the month: "))
+    month = int(input("Please enter the month (numeric): "))
+    year = int(input("Please enter the year: "))
+    if day <= 0 or day > 31 or month <= 0 or month > 12 or year < 0:
+        int("t")
+    date1 = date(year, month, day)
+    showingID = len(theatre.listShowings())
     if theatre.addShowing(showingID, screenID, timeslotID, date1, filmID):
         print("Showing added. press enter to return")
     else:
@@ -90,8 +100,11 @@ def checkin():
             clear()
             print("Now checking in for showing with ID: ",showingID)
             answer = input("type 'y' to check in a viewer, any other key to stop checking in: ")
-            if not theatre.checkIn(showingID):
-                break
+            if answer == "y":
+                if not theatre.checkIn(showingID):
+                    input("")
+                    break
+            input("")
     else:
         print("I'm sorry, we don't know a showing with this ID.")
 
@@ -104,7 +117,8 @@ def reservationmenu():
         print(" 0. Return to main menu")
         print(" 1. Reserve for existing userID")
         print(" 2. Reserve for new user")
-        print(" 3. List users")
+        print(" 3. Remove user")
+        print(" 4. List users")
         choice = input("\n> ")
         try:
             if int(choice) == 0: return True
@@ -114,6 +128,8 @@ def reservationmenu():
                 create_user()
                 create_reservation()
             elif int(choice) == 3:
+                remove_user()
+            elif int(choice) == 4:
                 if len(theatre.listUsers()) == 0:
                     print("No users available.")
                 else:
@@ -133,13 +149,16 @@ def filmsmenu():
         print("Make your choice:\n")
         print(" 0. Return to main menu")
         print(" 1. Add a film")
-        print(" 2. List films")
+        print(" 2. Delete a film")
+        print(" 3. List films")
         choice = input("\n> ")
         try:
             if int(choice) == 0: return True
             elif int(choice) == 1:
                 create_film()
             elif int(choice) == 2:
+                delete_film()
+            elif int(choice) == 3:
                 for film in theatre.listFilms():
                     print(film)
                 input("\nPress enter to continue")

@@ -235,12 +235,12 @@ class Hashmap:
         probe type will be called.'''
         if isinstance(self.__table[self.__h(searchkey)], type(doubly_linked_chain.Doubly_linked_chain())):
             self.__probeIns(item, searchkey)
-        elif self.__table[self.__h(searchkey)].searchkey == None:
+        elif self.__table[self.__h(searchkey)].searchkey == None:           
             self.__table[self.__h(searchkey)] = self.__item(item, searchkey)
         else:
             self.__probeIns(item, searchkey)
         self.__length += 1
-
+        return True
 
     def getItem(self, searchkey):
         ''' Calls the get method of the given probe type. '''
@@ -259,16 +259,19 @@ class Hashmap:
         i = 0
         j = 0
         while i < self.getTableSize():
-            if not self.__table[self.__h(i)] == None:
-                ret_list.append(self.__table[self.__h(i)].searchKey)
-            ret_list.append(self.rec_quadtraverse(i**2))
+            if not self.__table[self.__h(i)].searchkey == None:
+                if isinstance(self.__table[self.__h(i)], type(doubly_linked_chain.Doubly_linked_chain())):
+                    ret_list.extend(self.__table[self.__h(searchkey)].traverse())
+                ret_list.append(self.__table[self.__h(i)].searchkey)
+            #ret_list.append(self.rec_quadtraverse(i**2))
+            i += 1
         return ret_list
 
     def rec_quadtraverse(self, j):
         ret_list = []
         while j < self.getTableSize():
             if not self.__table[self.__h(j)] == None:
-                ret_list.append(self.__table[self.__h(j)].searchKey)   
+                ret_list.append(self.__table[self.__h(j)].searchkey)   
             j = j**2
         return ret_list    
 
