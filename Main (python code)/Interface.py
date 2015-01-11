@@ -51,9 +51,9 @@ def remove_user():
 def create_film():
     ''' Asks for input and creates a film '''
     print("** adding a new film ***********")
+    filmID = int(input("Please enter the filmID: "))
     title = input("Please enter the title: ")
     rating = float(input("Please enter a rating: "))
-    filmID = len(theatre.listFilms())
     if theatre.addFilm(filmID, title, rating):
         print("Film Added. press enter to return")
     else:
@@ -73,6 +73,7 @@ def delete_film():
 def create_showing():
     ''' Asks for input and creates a showing '''
     print("** adding a new showing ***********")
+    showingID = int(input("Please enter the showingID: "))
     screenID = int(input("Please enter the screenID: "))
     timeslotID = int(input("Please enter the timeslotID: "))
     filmID = int(input("Please enter the filmID: "))
@@ -82,11 +83,20 @@ def create_showing():
     if day <= 0 or day > 31 or month <= 0 or month > 12 or year < 0:
         int("t")
     date1 = date(year, month, day)
-    showingID = len(theatre.listShowings())
     if theatre.addShowing(showingID, screenID, timeslotID, date1, filmID):
         print("Showing added. press enter to return")
     else:
         print("Showing could not be created. press enter to return")
+    input("")
+
+def delete_showing():
+    ''' Asks for input and deletes a showing '''
+    print("** deleting showing ***********")
+    showingID = int(input("Please enter the showingID: "))
+    if theatre.removeShowing(showingID):
+        print("Showing removed. press enter to return")
+    else:
+        print("Showing could not be removed. press enter to return")
     input("")
 
 def checkin():
@@ -139,8 +149,6 @@ def reservationmenu():
         except ValueError:
             continue
 
-
-
 def filmsmenu():
     ''' shows films menu, executes chozen input '''
     while True:
@@ -173,22 +181,24 @@ def showingsmenu():
         print("Make your choice:\n")
         print(" 0. Return to main menu")
         print(" 1. Add a showing")
-        print(" 2. List showings")
-        print(" 3. check in viewers for a showing")
+        print(" 2. Remove a showing")
+        print(" 3. List showings")
+        print(" 4. check in viewers for a showing")
         choice = input("\n> ")
         try:
             if int(choice) == 0: return True
             elif int(choice) == 1:
                 create_showing()
             elif int(choice) == 2:
+                delete_showing()
+            elif int(choice) == 3:
                 for showing in theatre.listShowings():
                     print(showing)
                 input("\nPress enter to continue")
-            elif int(choice) == 3:
+            elif int(choice) == 4:
                 checkin()
         except ValueError:
             continue
-
 
 def mainmenu():
     ''' prints the main menu and calls submenus '''
@@ -212,8 +222,6 @@ def mainmenu():
                 return 0
         except ValueError:
             continue
-        
-
 
 # Call our main menu to get the ball rolling
 mainmenu()

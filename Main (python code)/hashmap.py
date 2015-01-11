@@ -259,12 +259,13 @@ class Hashmap:
         i = 0
         j = 0
         while i < self.getTableSize():
-            if not self.__table[self.__h(i)].searchkey == None:
-                if isinstance(self.__table[self.__h(i)], type(doubly_linked_chain.Doubly_linked_chain())):
-                    ret_list.extend(self.__table[self.__h(searchkey)].traverse())
-                ret_list.append(self.__table[self.__h(i)].searchkey)
-            #ret_list.append(self.rec_quadtraverse(i**2))
-            i += 1
+            item = self.__table[self.__h(i)]
+            if isinstance(item, type(doubly_linked_chain.Doubly_linked_chain())):
+                for di in item.traverse():
+                    ret_list.append(di.searchkey)
+            elif not item.searchkey == None:
+                ret_list.append(item.searchkey)
+            i+=1
         return ret_list
 
     def rec_quadtraverse(self, j):
@@ -288,6 +289,7 @@ class Hashmap:
         else:
             self.__probeRem(searchkey)       
         self.__length -= 1
+        return True
 
 
     def isEmpty(self):
