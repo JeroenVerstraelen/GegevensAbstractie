@@ -18,7 +18,7 @@ class Movietheatre:
 
         # Tables (Showing and Film)
         self.showing_table = Table()
-        self.showing_table.setImplementation("234Tree")
+        self.showing_table.setImplementation("doublylinkedchain")
         self.showing_table.createTable()
 
         self.film_table = Table()
@@ -27,12 +27,12 @@ class Movietheatre:
         self.reservation_table = Table()
         self.reservation_table.createTable()
        
- 
         # Populate datastructures
         self.screens = []
         self.slots = []
         self.dates = []
         self.users = []
+        self.implementations = []
 
         s1 = self.addScreen(0, 200)
         s2 = self.addScreen(1, 150)
@@ -41,8 +41,7 @@ class Movietheatre:
         sl2 = self.addSlot(1, time(17))  # 17:00
         sl3 = self.addSlot(2, time(20))  # 20:00
         sl4 = self.addSlot(3, time(21,30)) # 22:30   
-
-
+         
         f1 = self.addFilm(0, "Bloody Mary", 6.75)
         f2 = self.addFilm(1, "Star Wars", 2.25)
         f3 = self.addFilm(2, "Clockwork Orange", 8.56)
@@ -51,12 +50,12 @@ class Movietheatre:
 
         self.addShowing(0, self.screens[0].getScreenNumber(), 
         2, date(2015,12,25), f2.getID())
-
         self.addShowing(1, self.screens[1].getScreenNumber(), 
         3, date(2015,12,25), f1.getID())
-
         self.addShowing(2, self.screens[1].getScreenNumber(), 
         3, date(2015,12,26), f4.getID())
+
+        self.implementations.extend(["binaryTree","doublylinkedchain","hashmap","redBlackTree","234Tree","23Tree"])
 
     def addScreen(self, screennumber, seats):
         screen = Screen()
@@ -79,6 +78,21 @@ class Movietheatre:
         user.setLastName(lastname)
         user.setEmail(email)
         self.users.append(user)
+
+    def listUsers(self):
+       return self.users
+
+    def removeUser(self, userID):
+       for u in self.users:
+           if u.getID() == userID:
+               r = u
+               break
+       if r:
+          self.users.remove(r)
+          for i in range(len(self.users)):
+              self.users[i].setID(i)
+          return True
+       return False
           
     def addFilm(self, filmID, title, rating):
         film = Film()
@@ -88,6 +102,15 @@ class Movietheatre:
         if self.film_table.tableInsert(film):
             return film
         return False
+
+    def listFilms(self):
+       return self.film_table.traverseTable()
+
+    def getFilm(self, filmID):
+       return self.film_table.tableRetrieve(filmID)
+
+    def removeFilm(self, filmID):
+       return self.film_table.tableDelete(filmID)
 
     def addShowing(self, showID, screenID, slotID, date, filmID):
         showing = Showing()
@@ -103,6 +126,27 @@ class Movietheatre:
             showing.setFreeSeats(screen.getSeats())
             return self.showing_table.tableInsert(showing)
         return False
+
+    def listShowings(self):
+       return self.showing_table.traverseTable()
+   
+    def getShowing(self, showingID):
+       return self.showing_table.tableRetrieve(showingID)
+
+    def removeShowing(self, showingID):
+       return self.showing_table.tableDelete(showingID)
+
+    def changeShowing(self, implementation):
+       if implementation not in self.implementations:
+           return False
+       items = self.showing_table.traverseTable()
+       self.showing_table.destroyTable()
+       self.showing_table = Table()
+       self.showing_table.setImplementation(implementation)
+       self.showing_table.createTable()
+       for item in items:
+           self.showing_table.tableInsert(item)
+       return True
 
     def makeReservation(self, reservationID, userID, showingID, amount):
         reservation = Reservation()
@@ -125,39 +169,6 @@ class Movietheatre:
 		
     def checkIn(self, showingID):
 	    return self.getShowing(showingID).checkIn()
-	
-    def listShowings(self):
-       return self.showing_table.traverseTable()
-   
-    def getShowing(self, showingID):
-       return self.showing_table.tableRetrieve(showingID)
-
-    def removeShowing(self, showingID):
-       return self.showing_table.tableDelete(showingID)
-
-    def listFilms(self):
-       return self.film_table.traverseTable()
-
-    def getFilm(self, filmID):
-       return self.film_table.tableRetrieve(filmID)
-
-    def removeFilm(self, filmID):
-       return self.film_table.tableDelete(filmID)
-
-    def listUsers(self):
-       return self.users
-
-    def removeUser(self, userID):
-       for u in self.users:
-           if u.getID() == userID:
-               r = u
-               break
-       if r:
-          self.users.remove(r)
-          for i in range(len(self.users)):
-              self.users[i].setID(i)
-          return True
-       return False
 
     def listReservations(self):
        return self.film_table.traverseTable()

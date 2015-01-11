@@ -32,20 +32,17 @@ class TwoThreeTree:
     
         def destroyAll(self):
             ''' Invokes 'destroy' on this Node and all its children. '''
-            if self.links[0] == None:
+            if self.links == [None, None, None, None]:
                 self.destroy()
             elif self.getSize() == 2:
-                for v in self.links[0].inorder():
-                    v.destroy()
-                for v in self.links[2].inorder():
-                    v.destroy()
-                for v in self.links[3].inorder():
-                    v.destroy()
+                self.links[0].destroyAll()
+                self.links[2].destroyAll()
+                self.links[3].destroyAll()
+                self.destroy()
             else:
-                for v in self.links[0].inorder():
-                    v.destroy() 
-                for v in self.links[3].inorder():
-                    v.destroy()
+                self.links[0].destroyAll()
+                self.links[3].destroyAll()
+                self.destroy()
     
         def getSize(self):
             ''' Returns the amount of values/instances contained by this Node. '''

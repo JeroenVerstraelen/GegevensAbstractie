@@ -44,7 +44,7 @@ class Redblacktree:
         def preOrderTraversal(self, node=None):    #traverses and prints the tree in preorder
             ret_list = []
             if None != node.key and node != None:
-                ret_list.append(node)
+                ret_list.append(node.key)
             if node.leftchild != None:
                 ret_list.extend(node.leftchild.postOrderTraversal(node.leftchild))
             if node.rightchild != None:
@@ -58,7 +58,7 @@ class Redblacktree:
             if node.rightchild != None:
                 ret_list.extend(node.rightchild.postOrderTraversal(node.rightchild))
             if None != node.key and node != None:
-                ret_list.append(node)
+                ret_list.append(node.key)
             return ret_list
            
         def inOrderTraversal(self, node=None):    #traverses and prints the tree in inorder
@@ -66,7 +66,7 @@ class Redblacktree:
             if node.leftchild != None:
                 ret_list.extend(node.leftchild.inOrderTraversal(node.leftchild))
             if None != node.key and node != None:
-                ret_list.append(node)
+                ret_list.append(node.key)
             if node.rightchild != None:
                 ret_list.extend(node.rightchild.inOrderTraversal(node.rightchild))
             return ret_list
@@ -247,7 +247,7 @@ class Redblacktree:
         ret_list = []
         if None == node:
             node = self.root
-        ret_list.append(node)
+        ret_list.append(node.key)
         if node.leftchild != None:
             ret_list.extend(node.leftchild.preOrderTraversal(node.leftchild))
         if node.rightchild != None:
@@ -262,7 +262,7 @@ class Redblacktree:
             ret_list.extend(node.leftchild.postOrderTraversal(node.leftchild))
         if node.rightchild != None:
             ret_list.extend(node.rightchild.postOrderTraversal(node.rightchild))
-        ret_list.append(node)
+        ret_list.append(node.key)
         return ret_list
     
     def inOrderTraversal(self, node=None):    #traverses and prints the tree in inorder
@@ -271,7 +271,7 @@ class Redblacktree:
             node = self.root
         if node.leftchild != None:
             ret_list.extend(node.leftchild.inOrderTraversal(node.leftchild))
-        ret_list.append(node)
+        ret_list.append(node.key)
         if node.rightchild != None:
             ret_list.extend(node.rightchild.inOrderTraversal(node.rightchild))
         return ret_list

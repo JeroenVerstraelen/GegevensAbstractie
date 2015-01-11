@@ -99,6 +99,16 @@ def delete_showing():
         print("Showing could not be removed. press enter to return")
     input("")
 
+def change_showing():
+    ''' Asks for input and changes the implementation of the showing_table '''
+    print("** changing showing ***********")
+    implementation = input("Please enter the new implementation: ")
+    if theatre.changeShowing(implementation):
+        print("Implementation changed. press enter to return")
+    else:
+        print("Implementation does not exist. press enter to return")
+    input("")    
+
 def checkin():
     ''' get a showing ID and check in viewers for that showing '''
     print("** checking in ********************")
@@ -184,6 +194,7 @@ def showingsmenu():
         print(" 2. Remove a showing")
         print(" 3. List showings")
         print(" 4. check in viewers for a showing")
+        print(" 5. Change implementation")
         choice = input("\n> ")
         try:
             if int(choice) == 0: return True
@@ -197,6 +208,8 @@ def showingsmenu():
                 input("\nPress enter to continue")
             elif int(choice) == 4:
                 checkin()
+            elif int(choice) == 5:
+                change_showing()
         except ValueError:
             continue
 
