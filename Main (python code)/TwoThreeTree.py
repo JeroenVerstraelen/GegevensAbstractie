@@ -97,36 +97,34 @@ class TwoThreeTree:
                 return None
             if self.getSize() == 2:
                 if searchKey < self.vals[0]:
-                    return self.links[0].retrieveItem(searchKey, treeItem)
+                    return self.links[0].retrieveItem(searchKey)
                 if searchKey < self.vals[2]:
-                    return self.links[2].retrieveItem(searchKey, treeItem)
-                return self.links[3].retrieveItem(searchKey, treeItem)
+                    return self.links[2].retrieveItem(searchKey)
+                return self.links[3].retrieveItem(searchKey)
             if searchKey < self.vals[1]:
-                return self.links[0].retrieveItem(searchKey, treeItem)
-            return self.links[3].retrieveItem(searchKey, treeItem)
+                return self.links[0].retrieveItem(searchKey)
+            return self.links[3].retrieveItem(searchKey)
     
         def insertItem(self, item):
             ''' Inserts an item into a 2-3-Tree using this node as root. '''
             if self.getSize() == 0:                                 # If the node of self has 0 elements.
                 self.vals = [None, item, None]
-                return
+                return True
             elif self.contains(item):
-                return                                              # If self contains the item, stop inserting.
+                return False                                        # If self contains the item, stop inserting.
             elif self.links == [None, None, None, None]:                             # If self is a leaf.  
                 self.insertInNode(item)
-                return  
+                return True
             elif self.getSize() == 2:                               # If the node of self has 2 elements.
                 if item < self.vals[0]:
-                    self.links[0].insertItem(item) 
+                    return self.links[0].insertItem(item) 
                 elif item < self.vals[2]:
-                    self.links[2].insertItem(item)
+                    return self.links[2].insertItem(item)
                 else:
-                    self.links[3].insertItem(item)
-                return
+                    return self.links[3].insertItem(item)
             if item < self.vals[1]:                                 # If the node of self has 1 element.
-                self.links[0].insertItem(item)
-                return
-            self.links[3].insertItem(item)  
+                return self.links[0].insertItem(item)
+            return self.links[3].insertItem(item)  
     
         def insertInNode(self, item):
             ''' Inserts an item in this Node. '''
@@ -466,13 +464,13 @@ class TwoThreeTree:
             return 0
         return self.height
 
-    def insertItem(self, newItem):
+    def insert(self, newItem):
         ''' Inserts an item in the tree. '''
-        self.root.insertItem(newItem)
+        return self.root.insertItem(newItem)
 
     def deleteItem(self, searchKey):
         ''' Deletes an item from the tree. '''
-        self.root.deleteItem(searchKey)
+        return self.root.deleteItem(searchKey)
 
     def retrieveItem(self, searchKey):
         ''' Returns an item from the tree linked with the searchKey, returns None if searchKey is not found. '''

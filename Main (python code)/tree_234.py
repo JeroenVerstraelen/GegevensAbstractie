@@ -101,7 +101,7 @@ class Tree234:
 
     def __init__(self):
         ''' start with an empty root node '''
-        self.node = Node()
+        self.node = Tree234.Node()
 
     def createTree(self):
         ''' method exists for completeness' sake; does nothing '''
@@ -109,7 +109,7 @@ class Tree234:
 
     def destroyTree(self):
         ''' makes tree empty '''
-        self.node = Node()
+        self.node = Tree234.Node()
 
     def isEmpty(self):
         ''' returns boolean indicating whether tree is empty '''
@@ -145,8 +145,8 @@ class Tree234:
         # defining a function to split nodes:
         def split(node):
             ''' Splits a tree-node into two one-nodes '''
-            node1 = Node(parent = node.parent)
-            node2 = Node(parent = node.parent)
+            node1 = Tree234.Node(parent = node.parent)
+            node2 = Tree234.Node(parent = node.parent)
             node1.addi(node.items[0])
             node.parent.addi(node.items[1])
             node2.addi(node.items[2])
@@ -160,7 +160,7 @@ class Tree234:
             node.parent.addc(node2)
         # special case: root needs to be split
         if self.node.size() == 3:
-            newrootnode = Node()
+            newrootnode = Tree234.Node()
             oldrootnode = self.node
             self.node.setParent(newrootnode)
             self.node = newrootnode
@@ -177,6 +177,7 @@ class Tree234:
             # set current node to child
             currentnode = childnode
         currentnode.addi(item)
+        return True
        
     def delete(self, searchKey):
         ''' deletes the node with the given search key from the tree '''
@@ -189,7 +190,7 @@ class Tree234:
             def merge(node, direction): # left = -1, right = 0
                 ''' merges node, sibling and parent item in given 
                     direction '''
-                mergednode = Node(parent = parent)
+                mergednode = Tree234.Node(parent = parent)
                 mergednode.addi(node.items[0])
                 mergednode.addi(sibling.items[0])
                 mergednode.addi(parent.items[index + direction])

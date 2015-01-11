@@ -18,7 +18,7 @@ class Movietheatre:
 
         # Tables (Showing and Film)
         self.showing_table = Table()
-        self.showing_table.setImplementation("hashmap")
+        self.showing_table.setImplementation("234Tree")
         self.showing_table.createTable()
 
         self.film_table = Table()
@@ -89,20 +89,19 @@ class Movietheatre:
             return film
         return False
 
-    def addShowing(self, showID, screenID, tID, date, filmID):
+    def addShowing(self, showID, screenID, slotID, date, filmID):
         showing = Showing()
-        if (len(self.screens) > screenID and len(self.slots) > tID and
+        if (len(self.screens) > screenID and len(self.slots) > slotID and
             self.film_table.tableRetrieve(filmID)):
             showing.setID(showID)
             showing.setScreenID(screenID)
-            timeslot = self.slots[tID]
+            timeslot = self.slots[slotID]
             showing.setTimeSlot(timeslot)
             showing.setDate(date)
             showing.setFilmID(filmID)
             screen = self.screens[int(screenID)]
             showing.setFreeSeats(screen.getSeats())
-            if self.showing_table.tableInsert(showing):
-                return True
+            return self.showing_table.tableInsert(showing)
         return False
 
     def makeReservation(self, reservationID, userID, showingID, amount):

@@ -59,13 +59,9 @@ class Table:
             return self.pointer.treeLength()
 
     def tableInsert(self, newItem):
-        if self.implementation == "23Tree":
-            if self.pointer.insertItem(newItem):
-                return True
-            return False
-        if self.pointer.insert(newItem, newItem):
-            return True
-        return False
+        if self.implementation == "23Tree" or self.implementation == "234Tree":
+            return self.pointer.insert(newItem)
+        return self.pointer.insert(newItem, newItem)
 
     def tableDelete(self, searchKey):
         if self.implementation == "binaryTree":

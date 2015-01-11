@@ -45,8 +45,7 @@ class Hashmap:
                 if n%divisor == 0:
                     return False
             return True
-
-    
+ 
         i = needed_size
         if i%2 == 0:
             i+=1
@@ -62,14 +61,18 @@ class Hashmap:
         chain if the given item isn't a linked chain yet
         a new linked chain will be created.'''
         if isinstance(self.__table[self.__h(searchkey)], type(doubly_linked_chain.Doubly_linked_chain())):
+            for i in self.__table[self.__h(searchkey)].traverse():                                          # If the chain already contains an item with that searchkey.
+                if i.searchkey == searchkey:
+                    return False
             self.__table[self.__h(searchkey)].insert(self.__item(item, searchkey), searchkey)
         else:
-            
             temp = self.__table[self.__h(searchkey)]
-            
+            if temp.searchkey == searchkey:
+                return False
             self.__table[self.__h(searchkey)] = doubly_linked_chain.Doubly_linked_chain()
             self.__table[self.__h(searchkey)].insert(temp, temp.searchkey)
             self.__table[self.__h(searchkey)].insert(self.__item(item, searchkey), searchkey)
+        return True
 
 
     def __seperate_chainRem(self, searchkey):
@@ -233,14 +236,15 @@ class Hashmap:
         ''' insert an item to the table if the place is
         already occupied the insert method of the chosen
         probe type will be called.'''
+        succes = False
         if isinstance(self.__table[self.__h(searchkey)], type(doubly_linked_chain.Doubly_linked_chain())):
-            self.__probeIns(item, searchkey)
+            succes = self.__probeIns(item, searchkey)
         elif self.__table[self.__h(searchkey)].searchkey == None:           
-            self.__table[self.__h(searchkey)] = self.__item(item, searchkey)
+            succes = self.__table[self.__h(searchkey)] = self.__item(item, searchkey)
         else:
-            self.__probeIns(item, searchkey)
+            succes = self.__probeIns(item, searchkey)
         self.__length += 1
-        return True
+        return succes
 
     def getItem(self, searchkey):
         ''' Calls the get method of the given probe type. '''

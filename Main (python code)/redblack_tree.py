@@ -73,12 +73,12 @@ class Redblacktree:
      
 
     def __init__(self):
-        self.dummy = redblacknode(None)#dummy node
+        self.dummy = Redblacktree.redblacknode(None)#dummy node
         self.root = self.dummy    #upon initialisation of a tree, the dummy serves as the root
     
     def search(self,key,node=None):    
         '''
-        searches for a value in the tree and returns the node if it's included in the tree, otherwise returns None
+        searches for a searchkey in the tree and returns the item if it's included in the tree, otherwise returns None
         can be called with a node to search only the subtrees of that node
         if no node is entered the default node is the root of the tree
         '''
@@ -89,14 +89,14 @@ class Redblacktree:
                 node = node.leftchild
             else:
                 node = node.rightchild
-        if node.key == key: return node    #only return the node if the keys match
+        if node.key == key: return node.key    #only return the item if the keys match
         else: return None
     
     def insert(self,key,item):
         '''
         inserts an item in the tree and restores the properties of a red-black tree after
         '''
-        the_node = redblacknode(key)    #initialize a node with the entered key
+        the_node = Redblacktree.redblacknode(key)    #initialize a node with the entered key
         helpingnode = self.dummy
         node = self.root
         while node != self.dummy:    #search for the node's place in the tree
@@ -110,12 +110,15 @@ class Redblacktree:
             self.root = the_node    
         elif the_node.key < helpingnode.key:    #otherwise, find out if the new node is the parents' left or right child
             helpingnode.leftchild = the_node
-        else:
+        elif the_node.key > helpingnode.key:
             helpingnode.rightchild = the_node
+        elif the_node.key == helpingnode.key:   # If a node with the same searchkey exists.
+            return False
         the_node.leftchild = self.dummy    #the new node becomes a leaf
         the_node.rightchild = self.dummy
         the_node.red = True        #the new connection is initialized as red for convenience in the restoreproperties procedure
         self.restoreproperties(the_node)
+        return True
 
     def delete(self,key):
         '''

@@ -144,12 +144,12 @@ class BinTree:
             if self.lefttree == None:
                 self.lefttree = BinTree(node)
             else:
-                self.lefttree.insert(searchkey, data)
+                return self.lefttree.insert(searchkey, data)
         elif self.root < searchkey:
             if self.righttree == None:
                 self.righttree = BinTree(node)
             else:
-                self.righttree.insert(searchkey, data)
+                return self.righttree.insert(searchkey, data)
         return True
 
     def remove(self, searchkey):
