@@ -32,7 +32,7 @@ class Movietheatre:
         self.slots = []
         self.dates = []
         self.users = []
-        self.implementations = ["binaryTree","doublylinkedcha        in","hashmap","redBlackTree","234Tree","23Tree"]
+        self.implementations = ["binaryTree","doublylinkedchain","hashmap","redBlackTree","234Tree","23Tree"]
 
         #s1 = self.addscreen(0, 200)
         #s2 = self.addscreen(1, 150)
