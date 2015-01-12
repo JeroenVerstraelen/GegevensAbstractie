@@ -32,32 +32,84 @@ class Movietheatre:
         self.slots = []
         self.dates = []
         self.users = []
-        self.implementations = []
+        self.implementations = ["binaryTree","doublylinkedcha        in","hashmap","redBlackTree","234Tree","23Tree"]
 
-        s1 = self.addScreen(0, 200)
-        s2 = self.addScreen(1, 150)
+        #s1 = self.addscreen(0, 200)
+        #s2 = self.addscreen(1, 150)
  
-        sl1 = self.addSlot(0, time(14,30))  # 14:30
-        sl2 = self.addSlot(1, time(17))  # 17:00
-        sl3 = self.addSlot(2, time(20))  # 20:00
-        sl4 = self.addSlot(3, time(21,30)) # 22:30   
-         
-        f1 = self.addFilm(0, "Bloody Mary", 6.75)
-        f2 = self.addFilm(1, "Star Wars", 2.25)
-        f3 = self.addFilm(2, "Clockwork Orange", 8.56)
-        f3 = self.addFilm(3, "Shining", 4.52)
-        f4 = self.addFilm(4, "V for vendetta", 9.85)
+        #sl1 = self.addslot(0, time(14,30))  # 14:30
+        #sl2 = self.addslot(1, time(17))  # 17:00
+        #sl3 = self.addslot(2, time(20))  # 20:00
+        #sl4 = self.addslot(3, time(21,30)) # 22:30   
+        # 
+        #f1 = self.addfilm(0, "bloody mary", 6.75)
+        #f2 = self.addfilm(1, "star wars", 2.25)
+        #f3 = self.addfilm(2, "clockwork orange", 8.56)
+        #f3 = self.addfilm(3, "shining", 4.52)
+        #f4 = self.addfilm(4, "v for vendetta", 9.85)
 
-        self.addShowing(0, self.screens[0].getScreenNumber(), 
-        2, date(2015,12,25), f2.getID())
-        self.addShowing(1, self.screens[1].getScreenNumber(), 
-        3, date(2015,12,25), f1.getID())
-        self.addShowing(2, self.screens[1].getScreenNumber(), 
-        3, date(2015,12,26), f4.getID())
+        #self.addshowing(0, self.screens[0].getscreennumber(), 
+        #2, date(2015,12,25), f2.getid())
+        #self.addshowing(1, self.screens[1].getscreennumber(), 
+        #3, date(2015,12,25), f1.getid())
+        #self.addshowing(2, self.screens[1].getscreennumber(), 
+        #3, date(2015,12,26), f4.getid())
 
-        self.implementations.extend(["binaryTree","doublylinkedchain","hashmap","redBlackTree","234Tree","23Tree"])
+        #self.implementations.extend(["binaryTree","doublylinkedchain","hashmap","redBlackTree","234Tree","23Tree"])
+
+    def populate(self, textfile):
+        ''' loads data into our datastructures from a text file '''
+        try:
+            handle = open(textfile, "r")
+        except:
+            print("Error opening file")
+            return False
+        lines = handle.readlines()
+        handle.close
+        # getting screens
+        start = lines.index("SCREENS\n") + 1
+        end = lines.index("END SCREENS\n")
+        screens = lines[start:end]
+        for screen in screens:
+            if not self.addScreen(len(self.screens), screen.rstrip()):
+                print("Error loading screens. Check data file syntax")
+                return False
+        # getting slots
+        start = lines.index("SLOTS\n") + 1
+        end = lines.index("END SLOTS\n")
+        slots = lines[start:end]
+        for string in slots:
+            slot = string.split(",")
+            hour = time(int(slot[0]), int(slot[1].rstrip()))
+            if not self.addSlot(len(self.slots), hour):
+                print("Error loading slots. Check data file syntax")
+                return False
+        # getting films
+        start = lines.index("FILMS\n") + 1
+        end = lines.index("END FILMS\n")
+        films = lines[start:end]
+        for string in films:
+            film = string.split(",")
+            if not self.addFilm(len(self.listFilms()), film[0], 
+                                film[1].rstrip()):
+                print("Error loading films. Check data file syntax")
+                return False
+        # getting showings
+        start = lines.index("SHOWINGS\n") + 1
+        end = lines.index("END SHOWINGS\n")
+        showings = lines[start:end]
+        for string in showings:
+            showing = string.split(",")
+            showdate = date(int(showing[2]), int(showing[3]), int(showing[4]))
+            if not self.addShowing(len(self.listShowings()), showing[0],
+                       int(showing[1]), showdate, int(showing[5].rstrip())):
+                print("Error loading showings. Check data file syntax")
+                return False
+        return True
+
 
     def addScreen(self, screennumber, seats):
+        ''' Adds a screen to our theatre '''
         screen = Screen()
         screen.setScreenNumber(screennumber)
         screen.setSeats(seats)
@@ -112,13 +164,15 @@ class Movietheatre:
     def removeFilm(self, filmID):
        return self.film_table.tableDelete(filmID)
 
-    def changeFilm(self, implementation):
+    def changeFilm(self, implementation, probingtype = 0):
+       ''' Changes implementation of the films table '''
        if implementation not in self.implementations:
            return False
        items = self.film_table.traverseTable()
        self.film_table.destroyTable()
        self.film_table = Table()
        self.film_table.setImplementation(implementation)
+       self.film_table.setProbingType(probingtype)
        self.film_table.createTable()
        for item in items:
            self.film_table.tableInsert(item)
@@ -127,7 +181,7 @@ class Movietheatre:
 
     def addShowing(self, showID, screenID, slotID, date, filmID):
         showing = Showing()
-        if (len(self.screens) > screenID and len(self.slots) > slotID and
+        if (len(self.screens) > int(screenID) and len(self.slots) > int(slotID) and
             self.film_table.tableRetrieve(filmID)):
             showing.setID(showID)
             showing.setScreenID(screenID)
@@ -149,13 +203,15 @@ class Movietheatre:
     def removeShowing(self, showingID):
        return self.showing_table.tableDelete(showingID)
 
-    def changeShowing(self, implementation):
+    def changeShowing(self, implementation, probingtype = 0):
+       ''' changes implementation of the showings table '''
        if implementation not in self.implementations:
            return False
        items = self.showing_table.traverseTable()
        self.showing_table.destroyTable()
        self.showing_table = Table()
        self.showing_table.setImplementation(implementation)
+       self.film_table.setProbingType(probingtype)
        self.showing_table.createTable()
        for item in items:
            self.showing_table.tableInsert(item)
@@ -205,3 +261,5 @@ class Movietheatre:
     def getTickets(self, showingID):
        return self.getShowing(showingID).getTickets()
 	
+    def listImplementations(self):
+       return self.implementations

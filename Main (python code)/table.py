@@ -8,10 +8,18 @@ from twothreetree import *
 
 
 class Table:
-
+    ''' represents the table ADT '''
     def __init__(self):
-        self.implementation = "binaryTree"
+        self.implementation = "binaryTree" # default implementation
+        self.probingtype = 0 # only used for hashmap implementation
         self.pointer = None
+
+    def setProbingType(self, probingtype):
+        ''' Sets the probing type in case we use a hashmap '''
+        if probingtype in [0, 1, 2]:
+            self.probingtype = probingtype
+            return True
+        return False
         
     def setImplementation(self, implementation):
         self.implementation = implementation
@@ -25,7 +33,7 @@ class Table:
         elif self.implementation == "doublylinkedchain":
             self.pointer = Doubly_linked_chain()
         elif self.implementation == "hashmap":
-            self.pointer = Hashmap(10000)
+            self.pointer = Hashmap(10000, self.probingtype)
         elif self.implementation == "redBlackTree":
             self.pointer = Redblacktree()
         elif self.implementation == "234Tree":

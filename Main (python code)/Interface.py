@@ -1,3 +1,5 @@
+# This file provides a user interface with a menu structure and     methods
+# to interact with the program.
 import os
 from movietheatre import * 
 
@@ -12,6 +14,11 @@ else:
     def clear():
         os.system("clear")
         
+##########################################################################
+# USER INPUT METHODS
+# The following methods provide the basic interaction with the program,
+# asking for input and calling the appropriate methods.
+##########################################################################
 
 def create_reservation():
     ''' Asks for input and creates a reservation '''
@@ -72,9 +79,17 @@ def delete_film():
 
 def change_film():
     ''' Asks for input and changes the implementation of the film_table '''
-    print("** changing film ***********")
+    print("** changing film implementation ***********")
+    print("\nValid implementations are: ", theatre.listImplementations())
     implementation = input("Please enter the new implementation: ")
-    if theatre.changeFilm(implementation):
+    probingtype = 0
+    if implementation == "hashmap":
+        print("choose a probing type for the hashmap. Valid types are:")
+        print("0: seperate chaining")
+        print("1: linear probing")
+        print("2: quadratic probing")
+        probingtype = input("Please enter probing type number: ")
+    if theatre.changeFilm(implementation, probingtype):
         print("Implementation changed. press enter to return")
     else:
         print("Implementation does not exist. press enter to return")
@@ -111,9 +126,17 @@ def delete_showing():
 
 def change_showing():
     ''' Asks for input and changes the implementation of the showing_table '''
-    print("** changing showing ***********")
+    print("** changing showing implementation ***********")
+    print("\nValid implementations are: ", theatre.listImplementations())
     implementation = input("Please enter the new implementation: ")
-    if theatre.changeShowing(implementation):
+    probingtype = 0
+    if implementation == "hashmap":
+        print("choose a probing type for the hashmap. Valid types are:")
+        print("0: seperate chaining")
+        print("1: linear probing")
+        print("2: quadratic probing")
+        probingtype = input("Please enter probing type number: ")
+    if theatre.changeShowing(implementation, probingtype):
         print("Implementation changed. press enter to return")
     else:
         print("Implementation does not exist. press enter to return")
@@ -139,6 +162,7 @@ def checkin():
         while answer == "y":
             clear()
             print("Now checking in for showing with ID: ",showingID)
+            print(" there are ", theatre.getTickets(showingID), "tickets still not checked in.\n")
             answer = input("type 'y' to check in a viewer, any other key to stop checking in: ")
             if answer == "y":
                 if not theatre.checkIn(showingID):
@@ -148,6 +172,22 @@ def checkin():
     else:
         print("I'm sorry, we don't know a showing with this ID.")
 
+def importdata():
+    ''' Asks for a data file and imports the data in that file '''
+    print("** importing data ***********")
+    datafile = input("Please enter data file name: ")
+    if theatre.populate(datafile):
+        print("Data imported. Press enter to return.")
+    else:
+        print("Import failed. Press enter to return.")
+    input("")
+
+
+###########################################################################
+# MENU STRUCTURE
+# following methods make up the menu structure of the program, allowing
+# the user to navigate between menus and access the user input methods.
+###########################################################################
 def reservationmenu():
     ''' shows reservation menu, executes chozen input '''
     while True:
@@ -248,7 +288,8 @@ def mainmenu():
         print(" 1. Make reservation")
         print(" 2. Manage showings")
         print(" 3. Manage films")
-        print(" 4. Quit")
+        print(" 4. Import data")
+        print(" 5. Quit")
         choice = input("\n> ")
         try:
             if int(choice) == 1: 
@@ -258,6 +299,8 @@ def mainmenu():
             elif int(choice) == 3: 
                 filmsmenu()
             elif int(choice) == 4:
+                importdata()
+            elif int(choice) == 5:
                 return 0
         except ValueError:
             continue
