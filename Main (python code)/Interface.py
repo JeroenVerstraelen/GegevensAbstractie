@@ -157,12 +157,13 @@ def checkin():
     print("** checking in ********************")
     showingID = int(input("Please input the showing ID: "))
     showing = theatre.getShowing(showingID)
-    if showing != None:
+    if showing:
         answer = "y"
         while answer == "y":
             clear()
             print("Now checking in for showing with ID: ",showingID)
-            print(" there are ", theatre.getTickets(showingID), "tickets still not checked in.\n")
+            # print(" there are ", theatre.getTickets(showingID), "tickets still not checked in.\n") |A Stack does not have a getLength() function.
+            # getTickets(showingID) returns the Stack itself.
             answer = input("type 'y' to check in a viewer, any other key to stop checking in: ")
             if answer == "y":
                 if not theatre.checkIn(showingID):
@@ -170,7 +171,8 @@ def checkin():
                     break
             input("")
     else:
-        print("I'm sorry, we don't know a showing with this ID.")
+        print("I'm sorry, we don't know a showing with this ID.\npress enter to return")
+        input("")
 
 def importdata():
     ''' Asks for a data file and imports the data in that file '''

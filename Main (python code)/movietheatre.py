@@ -33,7 +33,7 @@ class Movietheatre:
         self.dates = []
         self.users = []
         self.implementations = ["binaryTree","doublylinkedchain","hashmap","redBlackTree","234Tree","23Tree"]
-
+        
         #s1 = self.addscreen(0, 200)
         #s2 = self.addscreen(1, 150)
  
@@ -54,8 +54,6 @@ class Movietheatre:
         #3, date(2015,12,25), f1.getid())
         #self.addshowing(2, self.screens[1].getscreennumber(), 
         #3, date(2015,12,26), f4.getid())
-
-        #self.implementations.extend(["binaryTree","doublylinkedchain","hashmap","redBlackTree","234Tree","23Tree"])
 
     def populate(self, textfile):
         ''' loads data into our datastructures from a text file '''
@@ -91,7 +89,7 @@ class Movietheatre:
         for string in films:
             film = string.split(",")
             if not self.addFilm(len(self.listFilms()), film[0], 
-                                film[1].rstrip()):
+                                film[1].rstrip()):                                # Dangerous to use len(self.listFilms())
                 print("Error loading films. Check data file syntax")
                 return False
         # getting showings
@@ -225,6 +223,8 @@ class Movietheatre:
                sorted = self.showing_table.sortObjectList(self.showing_table.traverseTable(), Showing.getTimeSlot)
            elif keyType == "Screen":
                sorted = self.showing_table.sortObjectList(self.showing_table.traverseTable(), Showing.getScreenID)
+           else:
+               return False
            for item in sorted:
                self.showing_table.tableDelete(item)
            for item in sorted:
