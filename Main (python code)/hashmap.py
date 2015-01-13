@@ -1,16 +1,15 @@
 import math
 import doubly_linked_chain
 
-class Hashmap:
-    
+class Hashmap:     
     def __init__(self,size,probingType=0):
         '''This class is a hashtable, size is the
         wished size of the table it will be set to
         the next higher prime number. The probing type
         can be set to the following: 0 = seperate chaining,
         1  = linear probing, 2 = quadratic probing.
-        If not specified otherwise the hashtable is set to seperate chaining.
-        '''
+        If not specified otherwise the hashtable is set to seperate
+        chaining. '''
         self.__tableSize = self.__getMapSize(size)
         self.__table = [self.__item(0, None)]
         for i in range(self.__tableSize-1):
@@ -48,11 +47,9 @@ class Hashmap:
  
         i = needed_size
         if i%2 == 0:
-            i+=1
-        
+            i+=1 # makes hashmap size uneven, since it needs to be prime
         while not is_prime(i):
             i+=2;
-
         return i
 
 
@@ -60,18 +57,23 @@ class Hashmap:
         ''' insert an item into the given doubly linked
         chain if the given item isn't a linked chain yet
         a new linked chain will be created.'''
-        if isinstance(self.__table[self.__h(searchkey)], type(doubly_linked_chain.Doubly_linked_chain())):
-            for i in self.__table[self.__h(searchkey)].traverse():                                          # If the chain already contains an item with that searchkey.
+        if isinstance(self.__table[self.__h(searchkey)], 
+                      type(doubly_linked_chain.Doubly_linked_chain())):
+            for i in self.__table[self.__h(searchkey)].traverse():
+                # If the chain already contains an item with that searchkey.
                 if i.searchkey == searchkey:
                     return False
-            self.__table[self.__h(searchkey)].insert(self.__item(item, searchkey), searchkey)
+            self.__table[self.__h(searchkey)].insert(self.__item(item, 
+                                                     searchkey), searchkey)
         else:
             temp = self.__table[self.__h(searchkey)]
             if temp.searchkey == searchkey:
                 return False
-            self.__table[self.__h(searchkey)] = doubly_linked_chain.Doubly_linked_chain()
+            self.__table[self.__h(searchkey)] = 
+                                  doubly_linked_chain.Doubly_linked_chain()
             self.__table[self.__h(searchkey)].insert(temp, temp.searchkey)
-            self.__table[self.__h(searchkey)].insert(self.__item(item, searchkey), searchkey)
+            self.__table[self.__h(searchkey)].insert(self.__item(item, 
+                                                     searchkey), searchkey)
         return True
 
 
@@ -79,7 +81,8 @@ class Hashmap:
         ''' Removes the item with the given searchkey from a
         linked chain if the chain only contains one item
         afterwards it will be turned into an item again. '''
-        if isinstance(self.__table[self.__h(searchkey)], type(doubly_linked_chain.Doubly_linked_chain())):
+        if isinstance(self.__table[self.__h(searchkey)], 
+                      type(doubly_linked_chain.Doubly_linked_chain())):
             if self.__table[self.__h(searchkey)].length == 1:
                 self.__table[self.__h(searchkey)] = 0
                 return
@@ -93,7 +96,8 @@ class Hashmap:
 
     def __seperate_chainGet(self, searchkey):
         ''' returns the item with the specified searchkey ''' 
-        if isinstance(self.__table[self.__h(searchkey)], type(doubly_linked_chain.Doubly_linked_chain())):
+        if isinstance(self.__table[self.__h(searchkey)], 
+                      type(doubly_linked_chain.Doubly_linked_chain())):
             tmp = self.__table[self.__h(searchkey)].getNode(searchkey)
             if tmp == None:
                 return -1
@@ -115,21 +119,24 @@ class Hashmap:
 
     def __linear_probeRem(self, searchkey):
         ''' checks the higher positions in the table and removes the first
-        item that equals the given searchkey. Closes the gap in the line aftwerwards. '''
+        item that equals the given searchkey. Closes the gap in the line
+        aftwerwards. '''
         def getNext(self, searchkey, i):
-            ''' get the next item in line that should be at the position hashed by the searchkey '''
+            ''' get the next item in line that should be at the position
+            hashed by the searchkey '''
             while self.__table[self.__h(searchkey)+i].searchkey != None:
                 
-                if self.__table[self.__h(searchkey)+i].searchkey == searchkey and self.__h(self.__table[self.__h(searchkey)+i].searchkey) == self.__h(searchkey):
+                if self.__table[self.__h(searchkey)+i].searchkey == 
+                   searchkey and self.__h(self.__table[self.__h(searchkey) +
+                   i].searchkey) == self.__h(searchkey):
                     i+=1
                     continue
-                if self.__h(self.__table[self.__h(searchkey)+i].searchkey) == self.__h(searchkey):
+                if self.__h(self.__table[self.__h(searchkey) + i].searchkey)
+                            == self.__h(searchkey):
                     return self.__table[self.__h(searchkey)+i]
                 i+=1
                 
             return -1
-
-
         i = 0
         while self.__table[self.__h(searchkey)+i].searchkey != None:
             if self.__table[self.__h(searchkey)+i].searchkey == searchkey:
@@ -178,11 +185,13 @@ class Hashmap:
         going in square steps. '''
         def getNext(self, searchkey, i):
             while self.__table[self.__h(i)].searchkey != None:
-                
-                if self.__table[self.__h(i)].searchkey == searchkey and self.__h(self.__table[self.__h(i)].searchkey) == self.__h(searchkey):
+                if self.__table[self.__h(i)].searchkey == searchkey and
+                   self.__h(self.__table[self.__h(i)].searchkey) ==
+                   self.__h(searchkey):
                     i = i**2
                     continue
-                if self.__h(self.__table[self.__h(i)].searchkey) == self.__h(searchkey):
+                if self.__h(self.__table[self.__h(i)].searchkey) == 
+                                                     self.__h(searchkey):
                     return self.__table[self.__h(i)]
                 i = i**2
                 
@@ -221,8 +230,8 @@ class Hashmap:
 
 
     def __h(self, searchkey):
-        ''' Calculates the position of the element with the given searchkey in the
-        table the searchkey can be string or int.'''
+        ''' Calculates the position of the element with the given searchkey
+        in the table the searchkey can be string or int.'''
         if type(searchkey) == type(''):
             tmp = 0
             for char in searchkey:
@@ -237,10 +246,12 @@ class Hashmap:
         already occupied the insert method of the chosen
         probe type will be called.'''
         succes = False
-        if isinstance(self.__table[self.__h(searchkey)], type(doubly_linked_chain.Doubly_linked_chain())):
+        if isinstance(self.__table[self.__h(searchkey)], 
+                      type(doubly_linked_chain.Doubly_linked_chain())):
             succes = self.__probeIns(item, searchkey)
         elif self.__table[self.__h(searchkey)].searchkey == None:           
-            succes = self.__table[self.__h(searchkey)] = self.__item(item, searchkey)
+            succes = self.__table[self.__h(searchkey)] = self.__item(item,
+                                                                 searchkey)
         else:
             succes = self.__probeIns(item, searchkey)
         self.__length += 1
@@ -251,6 +262,7 @@ class Hashmap:
         return self.__probeGet(searchkey)
 
     def destroy(self):
+        ''' Empties the hashmap '''
         self.__tableSize = None
         self.__table = None
         self.__probeIns = None
@@ -259,6 +271,7 @@ class Hashmap:
         self.__length = 0
 
     def traverse(self):
+        ''' Returns a list of the items in the hashmap '''
         ret_list = []
         i = 0
         j = 0

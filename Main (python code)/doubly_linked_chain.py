@@ -56,6 +56,7 @@ class Doubly_linked_chain:
         dummyHeadNode = self.headPtr
         dummyHeadNode.next = dummyHeadNode
         dummyHeadNode.prev = dummyHeadNode
+        self.length = 0
         
 
     def getNode(self,searchKey):
@@ -77,6 +78,7 @@ class Doubly_linked_chain:
         return False
 
     def getLength(self):
+        ''' Returns the current length of the chain '''
         return self.length
 
     def isEmpty(self):

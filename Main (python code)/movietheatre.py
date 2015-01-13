@@ -10,6 +10,7 @@ from queue import *
 from datetime import *
 
 class Movietheatre:
+    ''' Represents a movie theatre '''
 
     def __init__(self):
         # Queue for reservations
@@ -57,7 +58,7 @@ class Movietheatre:
 
     def populate(self, textfile):
         ''' loads data into our datastructures from a text file '''
-        try:
+        try: # open given data file, return False if it fails
             handle = open(textfile, "r")
         except:
             print("Error opening file")
@@ -115,6 +116,7 @@ class Movietheatre:
         return screen
 
     def addSlot(self, slotID, time):
+        ''' Adds a time slot to the theatre '''
         slot = Slot()
         slot.setID(slotID)
         slot.setTime(time)
@@ -122,6 +124,7 @@ class Movietheatre:
         return slot
 
     def addUser(self, userID, firstname, lastname, email):
+        ''' Adds a user '''
         user = User()
         user.setID(userID)
         user.setFirstName(firstname)
@@ -130,9 +133,11 @@ class Movietheatre:
         self.users.append(user)
 
     def listUsers(self):
+       ''' Returns a list of our current users '''
        return self.users
 
     def removeUser(self, userID):
+       ''' Removes the user with the given ID '''
        for u in self.users:
            if u.getID() == userID:
                r = u
@@ -145,6 +150,7 @@ class Movietheatre:
        return False
           
     def addFilm(self, filmID, title, rating):
+        ''' Adds a film '''
         film = Film()
         film.setID(filmID)
         film.setTitle(title)
@@ -154,12 +160,15 @@ class Movietheatre:
         return False
 
     def listFilms(self):
+       ''' Returns a list of our current films '''
        return self.film_table.traverseTable()
 
     def getFilm(self, filmID):
+       ''' Returns the film with the given ID '''
        return self.film_table.tableRetrieve(filmID)
 
     def removeFilm(self, filmID):
+       ''' Removes the film with the given ID '''
        return self.film_table.tableDelete(filmID)
 
     def changeFilm(self, implementation, probingtype = 0):
@@ -178,6 +187,7 @@ class Movietheatre:
 
 
     def addShowing(self, showID, screenID, slotID, date, filmID):
+        ''' Adds a showing '''
         showing = Showing()
         if (len(self.screens) > int(screenID) and len(self.slots) > int(slotID) and
             self.film_table.tableRetrieve(filmID)):
@@ -193,12 +203,15 @@ class Movietheatre:
         return False
 
     def listShowings(self):
+       ''' Returns a list with all showings '''
        return self.showing_table.traverseTable()
    
     def getShowing(self, showingID):
+       ''' Returns the showing with the given ID '''
        return self.showing_table.tableRetrieve(showingID)
 
     def removeShowing(self, showingID):
+       ''' Removes the showing with the given ID '''
        return self.showing_table.tableDelete(showingID)
 
     def changeShowing(self, implementation, probingtype = 0):
@@ -216,6 +229,8 @@ class Movietheatre:
        return True
 
     def sortShowing(self, keyType):
+       ''' Sorts the internal list of showings by the given keytype
+      (only possible if currently using doubly linked chain) '''
        if self.showing_table.getImplementation() == "doublylinkedchain":
            if keyType == "Date":
                sorted = self.showing_table.sortObjectList(self.showing_table.traverseTable(), Showing.getDate)
@@ -234,6 +249,7 @@ class Movietheatre:
        return False
 
     def makeReservation(self, reservationID, userID, showingID, amount):
+        ''' Adds a new reservation '''
         reservation = Reservation()
         reservation.setID(reservationID)
         reservation.setTimestamp(datetime.now())
@@ -253,13 +269,17 @@ class Movietheatre:
         return False
 		
     def checkIn(self, showingID):
-	    return self.getShowing(showingID).checkIn()
+        ''' Checks in a viewer for the given showing '''
+	return self.getShowing(showingID).checkIn()
 
     def listReservations(self):
-       return self.film_table.traverseTable()
+        ''' Returns a list of all our reservations '''
+        return self.film_table.traverseTable()
 	   
     def getTickets(self, showingID):
-       return self.getShowing(showingID).getTickets()
+        ''' Returns the stack with all the tickets for the given showing '''
+        return self.getShowing(showingID).getTickets()
 	
     def listImplementations(self):
+        ''' Returns a list with all supported table implementations '''
        return self.implementations

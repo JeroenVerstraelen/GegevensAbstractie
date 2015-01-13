@@ -197,6 +197,7 @@ class BinTree:
         self.__init__()
 
     def inorder(self):
+        ''' returns a list with the items in the tree in order '''
         if self.isEmpty():
             return []
         keylist = []
@@ -208,6 +209,8 @@ class BinTree:
         return keylist
 
     def preorder(self):
+        ''' Returns a list with a preorder traversal of the items in the
+            tree '''
         if self.isEmpty():
             return []
         keylist = []
@@ -219,6 +222,8 @@ class BinTree:
         return keylist
 
     def postorder(self):
+        ''' Returns a list with a postorder traversal of the items in the
+            tree '''
         if self.isEmpty():
             return []
         keylist = []
