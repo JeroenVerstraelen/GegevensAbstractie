@@ -8,46 +8,46 @@
 #######################################################################
 # film format: title,rating
 FILMS
-The Matrix,0
-V for Vendetta,0.5
-Star Wars: Episode IV - A New Hope,1
-The Princess Bride,1.5
-The Fifth Element,2
-True Romance,2.5
-Avatar,3
-August Rush,3.5
-300,4
-Blade Runner,4.5
-Tombstone,5
-Saving Private Ryan,5.5
-Fight Club,6
-Heat,6.5
-King Arthur,7
-Idiocracy,7.5
-Dr. Strangelove or: How I Learned to Stop Worrying and Love the Bomb,8
-Love Actually,8.5
-Memento,9
-metropolis,9.5
-Seven Samurai,10
-Full Metal Jacket,10
+0,The Matrix,0
+1,V for Vendetta,0.5
+2,Star Wars: Episode IV - A New Hope,1
+3,The Princess Bride,1.5
+4,The Fifth Element,2
+5,True Romance,2.5
+6,Avatar,3
+7,August Rush,3.5
+8,300,4
+9,Blade Runner,4.5
+10,Tombstone,5
+11,Saving Private Ryan,5.5
+12,Fight Club,6
+13,Heat,6.5
+14,King Arthur,7
+15,Idiocracy,7.5
+16,Dr. Strangelove or: How I Learned to Stop Worrying and Love the Bomb,8
+17,Love Actually,8.5
+18,Memento,9
+19,metropolis,9.5
+20,Seven Samurai,10
+21,Full Metal Jacket,10
 END FILMS
 
 #######################################################################
 # showing format: screenID,slotID,year,month,day,filmID
 SHOWINGS
-1,1,2015,2,2,2
-0,0,2015,1,20,21
-0,3,2015,1,30,17
-1,2,2015,1,26,12
-3,0,2015,1,30,9
-3,2,2015,1,24,8
-0,1,2015,1,20,2
-3,2,2015,1,29,18
-2,1,2015,1,26,1
-0,1,2015,1,27,13
-0,3,2015,1,21,21
-0,3,2015,1,20,3
-3,0,2015,1,29,12
+0,1,1,2015,2,2,2
+1,0,0,2015,1,20,21
+2,0,3,2015,1,30,17
+3,1,2,2015,1,26,12
+4,3,0,2015,1,30,9
+5,3,2,2015,1,24,8
+6,0,1,2015,1,20,2
+7,3,2,2015,1,29,18
+8,2,1,2015,1,26,1
+9,0,1,2015,1,27,13
+10,0,3,2015,1,21,21
+11,0,3,2015,1,20,3
+12,3,0,2015,1,29,12
 END SHOWINGS
 
 #######################################################################

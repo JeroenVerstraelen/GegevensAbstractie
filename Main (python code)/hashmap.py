@@ -69,8 +69,7 @@ class Hashmap:
             temp = self.__table[self.__h(searchkey)]
             if temp.searchkey == searchkey:
                 return False
-            self.__table[self.__h(searchkey)] = 
-                                  doubly_linked_chain.Doubly_linked_chain()
+            self.__table[self.__h(searchkey)] = doubly_linked_chain.Doubly_linked_chain()
             self.__table[self.__h(searchkey)].insert(temp, temp.searchkey)
             self.__table[self.__h(searchkey)].insert(self.__item(item, 
                                                      searchkey), searchkey)
@@ -126,13 +125,13 @@ class Hashmap:
             hashed by the searchkey '''
             while self.__table[self.__h(searchkey)+i].searchkey != None:
                 
-                if self.__table[self.__h(searchkey)+i].searchkey == 
-                   searchkey and self.__h(self.__table[self.__h(searchkey) +
-                   i].searchkey) == self.__h(searchkey):
+                if (self.__table[self.__h(searchkey)+i].searchkey == searchkey
+                        and self.__h(self.__table[self.__h(searchkey) +
+                        i].searchkey) == self.__h(searchkey)):
                     i+=1
                     continue
-                if self.__h(self.__table[self.__h(searchkey) + i].searchkey)
-                            == self.__h(searchkey):
+                if (self.__h(self.__table[self.__h(searchkey) + i].searchkey)
+                            == self.__h(searchkey)):
                     return self.__table[self.__h(searchkey)+i]
                 i+=1
                 
@@ -185,13 +184,13 @@ class Hashmap:
         going in square steps. '''
         def getNext(self, searchkey, i):
             while self.__table[self.__h(i)].searchkey != None:
-                if self.__table[self.__h(i)].searchkey == searchkey and
+                if (self.__table[self.__h(i)].searchkey == searchkey and
                    self.__h(self.__table[self.__h(i)].searchkey) ==
-                   self.__h(searchkey):
+                   self.__h(searchkey)):
                     i = i**2
                     continue
-                if self.__h(self.__table[self.__h(i)].searchkey) == 
-                                                     self.__h(searchkey):
+                if (self.__h(self.__table[self.__h(i)].searchkey) == 
+                                                     self.__h(searchkey)):
                     return self.__table[self.__h(i)]
                 i = i**2
                 

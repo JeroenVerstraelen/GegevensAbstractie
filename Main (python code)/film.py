@@ -12,7 +12,7 @@ class Film:
    
     def setID(self, ID):
         ''' Sets the ID '''
-        self.ID = ID
+        self.ID = int(ID)
 
     def setTitle(self, title):
         ''' Sets the title '''
@@ -20,7 +20,7 @@ class Film:
 
     def setRating(self, rating):
         ''' Sets the rating '''
-        self.rating = rating
+        self.rating = float(rating)
 
     def getID(self):
         ''' Returns the ID '''

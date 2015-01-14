@@ -28,33 +28,13 @@ class Movietheatre:
         self.reservation_table = Table()
         self.reservation_table.createTable()
        
-        # Populate datastructures
+        # data lists
         self.screens = []
         self.slots = []
         self.dates = []
         self.users = []
         self.implementations = ["binaryTree","doublylinkedchain","hashmap","redBlackTree","234Tree","23Tree"]
         
-        #s1 = self.addscreen(0, 200)
-        #s2 = self.addscreen(1, 150)
- 
-        #sl1 = self.addslot(0, time(14,30))  # 14:30
-        #sl2 = self.addslot(1, time(17))  # 17:00
-        #sl3 = self.addslot(2, time(20))  # 20:00
-        #sl4 = self.addslot(3, time(21,30)) # 22:30   
-        # 
-        #f1 = self.addfilm(0, "bloody mary", 6.75)
-        #f2 = self.addfilm(1, "star wars", 2.25)
-        #f3 = self.addfilm(2, "clockwork orange", 8.56)
-        #f3 = self.addfilm(3, "shining", 4.52)
-        #f4 = self.addfilm(4, "v for vendetta", 9.85)
-
-        #self.addshowing(0, self.screens[0].getscreennumber(), 
-        #2, date(2015,12,25), f2.getid())
-        #self.addshowing(1, self.screens[1].getscreennumber(), 
-        #3, date(2015,12,25), f1.getid())
-        #self.addshowing(2, self.screens[1].getscreennumber(), 
-        #3, date(2015,12,26), f4.getid())
 
     def populate(self, textfile):
         ''' loads data into our datastructures from a text file '''
@@ -89,8 +69,7 @@ class Movietheatre:
         films = lines[start:end]
         for string in films:
             film = string.split(",")
-            if not self.addFilm(len(self.listFilms()), film[0], 
-                                film[1].rstrip()):                                # Dangerous to use len(self.listFilms())
+            if not self.addFilm(film[0], film[1], film[2].rstrip()):  
                 print("Error loading films. Check data file syntax")
                 return False
         # getting showings
@@ -99,9 +78,9 @@ class Movietheatre:
         showings = lines[start:end]
         for string in showings:
             showing = string.split(",")
-            showdate = date(int(showing[2]), int(showing[3]), int(showing[4]))
-            if not self.addShowing(len(self.listShowings()), showing[0],
-                       int(showing[1]), showdate, int(showing[5].rstrip())):
+            showdate = date(int(showing[3]), int(showing[4]), int(showing[5]))
+            if not self.addShowing(showing[0], showing[1],
+                       int(showing[2]), showdate, int(showing[6].rstrip())):
                 print("Error loading showings. Check data file syntax")
                 return False
         return True
@@ -137,17 +116,12 @@ class Movietheatre:
        return self.users
 
     def removeUser(self, userID):
-       ''' Removes the user with the given ID '''
-       for u in self.users:
-           if u.getID() == userID:
-               r = u
-               break
-       if r:
-          self.users.remove(r)
-          for i in range(len(self.users)):
-              self.users[i].setID(i)
-          return True
-       return False
+        ''' Removes the user with the given ID '''
+        if userID in self.users:
+            self.users.remove(userID)
+            return True
+        return False
+       
           
     def addFilm(self, filmID, title, rating):
         ''' Adds a film '''
@@ -170,6 +144,7 @@ class Movietheatre:
     def removeFilm(self, filmID):
        ''' Removes the film with the given ID '''
        return self.film_table.tableDelete(filmID)
+
 
     def changeFilm(self, implementation, probingtype = 0):
        ''' Changes implementation of the films table '''
@@ -270,7 +245,7 @@ class Movietheatre:
 		
     def checkIn(self, showingID):
         ''' Checks in a viewer for the given showing '''
-	return self.getShowing(showingID).checkIn()
+        return self.getShowing(showingID).checkIn()
 
     def listReservations(self):
         ''' Returns a list of all our reservations '''
@@ -282,4 +257,38 @@ class Movietheatre:
 	
     def listImplementations(self):
         ''' Returns a list with all supported table implementations '''
-       return self.implementations
+        return self.implementations
+
+    def sortObjectList(self, olist, getter):
+        ''' this function takes lists of objects and getter methods to sort the
+            objects by different properties '''
+        def quicksort(lst):
+            if len(lst) < 2:
+                return lst
+            pivotindex = int((len(lst) - 1)/2)
+            newpivotindex = int((len(lst) - 1)/2)
+            pivot = lst[pivotindex]
+            for i in range(pivotindex - 1, -1, -1):
+                if lst[i] >= pivot:
+                    lst.insert(newpivotindex, lst.pop(i))
+                    newpivotindex -= 1
+            for i in range(pivotindex + 1, len(lst)):
+                if lst[i] <= pivot:
+                    lst.insert(newpivotindex, lst.pop(i))
+                    newpivotindex += 1
+            leftlist = quicksort(lst[0:newpivotindex])
+            leftlist.append(pivot)
+            rightlist = quicksort(lst[newpivotindex + 1:len(lst)])
+            lst = leftlist + rightlist
+            return lst
+        templist = []
+        for obj in olist:
+            templist.append((getter(obj), obj))
+        sortedlist = quicksort(templist)
+        resultlist = []
+        for item in sortedlist:
+            resultlist.append(item[1])
+        return resultlist
+    
+        
+

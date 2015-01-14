@@ -219,7 +219,8 @@ def reservationmenu():
                         print(user)
                 input("\nPress enter to continue")
         except ValueError:
-            continue
+           input("Illegal value. Press enter to continue")
+           continue
 
 def filmsmenu():
     ''' shows films menu, executes chozen input '''
@@ -231,6 +232,8 @@ def filmsmenu():
         print(" 1. Add a film")
         print(" 2. Delete a film")
         print(" 3. List films")
+        print("     31. sorted by title")
+        print("     32. sorted by rating")
         print(" 4. Change Implementation")
         choice = input("\n> ")
         try:
@@ -243,10 +246,23 @@ def filmsmenu():
                 for film in theatre.listFilms():
                     print(film)
                 input("\nPress enter to continue")
+            elif int(choice) == 31:
+                sorter = Table()
+                for film in sorter.sortObjectList(theatre.listFilms(),
+                                                  Film.getTitle):
+                    print(film)
+                input("\nPress enter to continue")
+            elif int(choice) == 32:
+                sorter = Table()
+                for film in sorter.sortObjectList(theatre.listFilms(),
+                                                  Film.getRating):
+                    print(film)
+                input("\nPress enter to continue")
             elif int(choice) == 4:
                 change_film()
         except ValueError:
-            continue
+           input("Illegal value. Press enter to continue")
+           continue
 
 def showingsmenu():
     ''' prints showing menu, executes chozen input '''
@@ -279,6 +295,7 @@ def showingsmenu():
             elif int(choice) == 6:
                 change_showing()
         except ValueError:
+            input("Illegal value. Press enter to continue")
             continue
 
 def mainmenu():
@@ -305,6 +322,7 @@ def mainmenu():
             elif int(choice) == 5:
                 return 0
         except ValueError:
+            input("Illegal value. Press enter to continue")
             continue
 
 # Call our main menu to get the ball rolling
