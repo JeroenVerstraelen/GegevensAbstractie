@@ -11,8 +11,8 @@ class Hashmap:
         If not specified otherwise the hashtable is set to seperate
         chaining. '''
         self.__tableSize = self.__getMapSize(size)
-        self.__table = [self.__item(0, None)]
-        for i in range(self.__tableSize-1):
+        self.__table = []
+        for i in range(self.__tableSize):
             self.__table.append(self.__item(0, None))
         
         if probingType == 0:
@@ -98,8 +98,8 @@ class Hashmap:
         if isinstance(self.__table[self.__h(searchkey)], 
                       type(doubly_linked_chain.Doubly_linked_chain())):
             tmp = self.__table[self.__h(searchkey)].getNode(searchkey)
-            if tmp == None:
-                return -1
+            if not tmp:
+                return False
             else:
                 return tmp.item.item
         else:
@@ -107,50 +107,65 @@ class Hashmap:
         
 
     def __linear_probeIns(self, item, searchkey):
-        ''' Inserts an item in the next free place higher in the table. '''
-        i = 1
+        ''' Inserts an item in the first free place with index on or after
+       the hash of the searchkey. '''
+        i = 0
         while self.__table[self.__h(searchkey)+i].searchkey != None:
             i+=1
             if self.__h(searchkey)+i > self.__tableSize-1:
-                return -1
+                i = 0 - self.__h(searchkey)
+            if i == 0: 
+            # This means we went full circle, so our hashmap is full
+                return False
         self.__table[self.__h(searchkey)+i] = self.__item(item,searchkey)
 
 
     def __linear_probeRem(self, searchkey):
         ''' checks the higher positions in the table and removes the first
         item that equals the given searchkey. Closes the gap in the line
-        aftwerwards. '''
+        afterwards. '''
         def getNext(self, searchkey, i):
             ''' get the next item in line that should be at the position
             hashed by the searchkey '''
             while self.__table[self.__h(searchkey)+i].searchkey != None:
                 
-                if (self.__table[self.__h(searchkey)+i].searchkey == searchkey
-                        and self.__h(self.__table[self.__h(searchkey) +
+                if (self.__table[self.__h(searchkey)+i].searchkey == 
+                        searchkey and 
+                        self.__h(self.__table[self.__h(searchkey) +
                         i].searchkey) == self.__h(searchkey)):
                     i+=1
                     continue
-                if (self.__h(self.__table[self.__h(searchkey) + i].searchkey)
-                            == self.__h(searchkey)):
+                if (self.__h(self.__table[self.__h(searchkey) + 
+                    i].searchkey) == self.__h(searchkey)):
                     return self.__table[self.__h(searchkey)+i]
                 i+=1
                 
-            return -1
+            return False
         i = 0
         while self.__table[self.__h(searchkey)+i].searchkey != None:
             if self.__table[self.__h(searchkey)+i].searchkey == searchkey:
                 tmp = getNext(self,searchkey, i)
-                if tmp == -1:
-                    self.__table[self.__h(searchkey)+i] = self.__item(0,None)
-                    return
-                while tmp != -1:
+                if tmp == False:
+                    self.__table[self.__h(searchkey)+i] =self.__item(0,None)
+                    return True
+                while tmp != False:
                     self.__table[self.__h(searchkey)+i] = tmp
                     tmp = getNext(self, self.__table[self.__h(searchkey)+i].searchkey, i)
                     i+=1
                     if self.__h(searchkey)+i > self.__tableSize-1:
-                        return -1
+                        i = 0 - self.__h(searchkey)
+                    if i == 0:
+                    # This means we went full circle, so our hashmap is full
+                        return False
+
                 self.__table[self.__h(searchkey)+i] = self.__item(0, None)
             i+=1
+            if self.__h(searchkey)+i > self.__tableSize-1:
+                i = 0 - self.__h(searchkey)
+            if i == 0:
+            # This means we went full circle, so our hashmap is full
+                return False
+
 
 
     def __linear_probeGet(self, searchkey):
@@ -162,9 +177,9 @@ class Hashmap:
                 return self.__table[self.__h(searchkey)+i].item
             i+=1
             if self.__h(searchkey)+i >= self.__tableSize-1:
-                return -1
+                return False
             
-        return -1
+        return False
    
 
     def __quadratic_probeIns(self, item, searchkey):
@@ -175,7 +190,7 @@ class Hashmap:
         while self.__table[self.__h(i)].searchkey != None:
             i= i**2
             if self.__h(i) > self.__tableSize-1:
-                return -1
+                return False
         self.__table[self.__h(i)] = self.__item(item,searchkey)
 
 
@@ -194,7 +209,7 @@ class Hashmap:
                     return self.__table[self.__h(i)]
                 i = i**2
                 
-            return -1
+            return False
 
         
         i = self.__h(searchkey)
@@ -210,7 +225,7 @@ class Hashmap:
                     tmp = getNext(self, self.__table[self.__h(i)].searchkey, i)
                     i = i**2
                     if self.__h(i) > self.__tableSize-1:
-                        return -1
+                        return False
                 self.__table[self.__h(i)] = self.__item(0, None)
             i = i**2
 
@@ -224,8 +239,8 @@ class Hashmap:
                 return self.__table[self.__h(i)].item
             i = i**2
             if self.__h(i) >= self.__tableSize-1:
-                return -1
-        return -1
+                return False
+        return False
 
 
     def __h(self, searchkey):
@@ -299,7 +314,7 @@ class Hashmap:
         if isinstance(self.__table[self.__h(searchkey)], type(doubly_linked_chain.Doubly_linked_chain())):
             self.__probeRem(searchkey)
         elif self.__table[self.__h(searchkey)].searchkey == None:
-            return -1 
+            return False 
         elif self.__table[self.__h(searchkey)].searchkey == searchkey:
             self.__probeRem(searchkey)    
         else:

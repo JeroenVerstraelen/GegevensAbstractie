@@ -10,16 +10,16 @@ def checks(tree):
     print(tree.traverse("preorder"))
     print(tree.traverse("postorder"))
     print("Is the tree empty? ",tree.isEmpty())
-    #print("trying to retrieve 0 ",tree.retrieve(0)) comparison of different types not supported
-    print("trying to retrieve 'nul' ",tree.retrieve("nul"))
-    print("trying to retrieve 'zeven' ",tree.retrieve("zeven"))
-
 
 print("creating tree")
 tree = tree_234.Tree234()
 
 print("running checks on empty tree:")
 checks(tree)
+print("trying to retrieve 'nul': ",tree.retrieve("nul"))
+print("trying to retrieve 'zeven': ",tree.retrieve("zeven"))
+
+
 tree.createTree() # no effect
 tree.destroyTree() # makes the tree empty. since it is empty, should have no effect
 
@@ -48,6 +48,9 @@ tree.insert("eenentwintig")
 
 print("running checks on tree with items 'een' to 'eenentwintig':")
 checks(tree)
+print("trying to retrieve 'nul': ",tree.retrieve("nul"))
+print("trying to retrieve 'zeven': ",tree.retrieve("zeven"))
+
 
 print("\ndeleting items 'een' to 'eenentwintig'")
 tree.delete("een")
@@ -74,15 +77,21 @@ tree.delete("eenentwintig")
 
 print("running checks on tree with all the items deleted from it:")
 checks(tree)
+print("trying to retrieve 'nul': ",tree.retrieve("nul"))
+print("trying to retrieve 'zeven': ",tree.retrieve("zeven"))
+
 
 input("we're going to load a large amount of data now... Press enter to continue")
 
 start_time = time.time()
 for i in range(100000):
     tree.insert(i)
-print("adding items took ", time.time() - start_time, " seconds.")
 print("running checks on tree with 100.000 items:")
 checks(tree)
+print("adding items took ", time.time() - start_time, " seconds.")
+print("trying to retrieve 0: ",tree.retrieve(0))
+print("trying to retrieve 55555: ",tree.retrieve(55555))
+
 
 
 
