@@ -118,6 +118,7 @@ class Hashmap:
             # This means we went full circle, so our hashmap is full
                 return False
         self.__table[self.__h(searchkey)+i] = self.__item(item,searchkey)
+        return True
 
 
     def __linear_probeRem(self, searchkey):
@@ -278,15 +279,15 @@ class Hashmap:
         succes = False
         if isinstance(self.__table[self.__h(searchkey)], 
                       type(doubly_linked_chain.Doubly_linked_chain())):
-            succes = self.__probeIns(item, searchkey)
+            success = self.__probeIns(item, searchkey)
         elif self.__table[self.__h(searchkey)].searchkey == None:           
             self.__table[self.__h(searchkey)] = self.__item(item, searchkey)
             success = True
         else:
-            succes = self.__probeIns(item, searchkey)
-        if succes:
+            success = self.__probeIns(item, searchkey)
+        if success:
             self.__length += 1
-        return succes
+        return success
 
     def getItem(self, searchkey):
         ''' Calls the get method of the given probe type. '''
