@@ -106,7 +106,10 @@ class Hashmap:
 
     def __linear_probeIns(self, item, searchkey):
         ''' Inserts an item in the first free place with index on or after
-       the hash of the searchkey. '''
+        the hash of the searchkey. '''
+        if self.getTableSize() == self.getLength():
+        # Can't insert if table is full
+            return False
         i = 0
         while self.__table[self.__h(searchkey)+i].searchkey != None:
             i+=1
@@ -153,6 +156,9 @@ class Hashmap:
         ''' Insert an item to the table if the position
         is already taken the item will be placed to the
         next open place in quadratic steps. '''
+        if self.getTableSize() == self.getLength():
+        # Can't insert if table is full
+            return False
         index = self.__h(searchkey)
         j = 1 # parameter for quadratic probing
         while self.__table[index].searchkey != None:

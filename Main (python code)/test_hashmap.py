@@ -2,6 +2,7 @@
 
 # import the classes to test
 import hashmap # change if needed
+import time
 
 # function to add a collection of items to a hashmap
 def additems(map0):
@@ -70,7 +71,7 @@ def runchecks(map0):
 
 # create a hashmap with seperate chaining
 print("\ntesting map with seperate chaining")
-map1 = hashmap.Hashmap(100, 0)
+map1 = hashmap.Hashmap(10000, 0)
 runchecks(map1)
 additems(map1)
 runchecks(map1)
@@ -80,7 +81,7 @@ runchecks(map1)
 
 # create a hashmap with linear probing
 print("\ntesting map with linear probing")
-map2 = hashmap.Hashmap(100, 1)
+map2 = hashmap.Hashmap(10000, 1)
 runchecks(map2)
 additems(map2)
 runchecks(map2)
@@ -91,11 +92,30 @@ runchecks(map2)
 
 # create a hashmap with quadratic probing
 print("\ntesting map with quadratic probing")
-map3 = hashmap.Hashmap(100, 2)
+map3 = hashmap.Hashmap(10000, 2)
 runchecks(map3)
 additems(map3)
 runchecks(map3)
 removeitems(map3)
 runchecks(map3)
+
+# stresstest with large amount of data
+input("we're going to load a large amount of data now... Press enter to continue")
+
+for i in range(3):
+    maps = [map1, map2, map3]
+    names = ['chaining','linear','quadratic']
+    cur_map = maps[i]
+    cur_name = names[i]
+    start_time = time.time()
+    print("Adding 100.000 items to ", cur_name, " hashmap of size 10000.")
+    for i in range(100000):
+        cur_map.insert(i,i)
+    print("adding items took ", time.time() - start_time, " seconds.")
+    print("trying to retrieve 0: ",cur_map.getItem(0))
+    print("trying to retrieve 9999: ",cur_map.getItem(9999))
+    print("trying to retrieve 33333: ",cur_map.getItem(33333))
+
+
 
 
