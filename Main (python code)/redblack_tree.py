@@ -67,6 +67,7 @@ class Redblacktree:
                 ret_list.extend(node.leftchild.inOrderTraversal(node.leftchild))
             if None != node.key and node != None:
                 ret_list.append(node.key)
+                ret_list.append(node.red)
             if node.rightchild != None:
                 ret_list.extend(node.rightchild.inOrderTraversal(node.rightchild))
             return ret_list
@@ -93,11 +94,8 @@ class Redblacktree:
         else: return None
 
     def searchInternal(self,key,node=None):    
-        '''
-        searches for a searchkey in the tree and returns the item if it's included in the tree, otherwise returns None
-        can be called with a node to search only the subtrees of that node
-        if no node is entered the default node is the root of the tree
-        '''
+        ''' Slightly modified search function for internal use. returns 
+        node instead of key '''
         if None == node:
             node = self.root
         while node != self.dummy and key != node.key:    #search until the end of the tree or until the key is found
@@ -169,6 +167,7 @@ class Redblacktree:
             node.leftchild = the_node.leftchild    #replace the_node with it's successor
             node.rightchild = the_node.rightchild
             node.parent = the_node.parent
+            self.restoreproperties(the_node)
             del(the_node)            #destroy the_node
 
     def restoreproperties(self,the_node):    
