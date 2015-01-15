@@ -85,7 +85,7 @@ def change_film():
     probingtype = 0
     if implementation == "hashmap":
         print("choose a probing type for the hashmap. Valid types are:")
-        print("0: seperate chaining")
+        print("0: separate chaining")
         print("1: linear probing")
         print("2: quadratic probing")
         probingtype = input("Please enter probing type number: ")
@@ -132,7 +132,7 @@ def change_showing():
     probingtype = 0
     if implementation == "hashmap":
         print("choose a probing type for the hashmap. Valid types are:")
-        print("0: seperate chaining")
+        print("0: separate chaining")
         print("1: linear probing")
         print("2: quadratic probing")
         probingtype = input("Please enter probing type number: ")
