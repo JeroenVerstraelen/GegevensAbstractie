@@ -6,9 +6,9 @@ class Hashmap:
         '''This class is a hashtable, size is the
         wished size of the table it will be set to
         the next higher prime number. The probing type
-        can be set to the following: 0 = seperate chaining,
+        can be set to the following: 0 = separate chaining,
         1  = linear probing, 2 = quadratic probing.
-        If not specified otherwise the hashtable is set to seperate
+        If not specified otherwise the hashtable is set to separate
         chaining. '''
         self.__tableSize = self.__getMapSize(size)
         self.__table = []
@@ -16,9 +16,9 @@ class Hashmap:
             self.__table.append(self.__item(0, None))
         
         if probingType == 0:
-            self.__probeIns = self.__seperate_chainIns
-            self.__probeRem = self.__seperate_chainRem
-            self.__probeGet = self.__seperate_chainGet
+            self.__probeIns = self.__separate_chainIns
+            self.__probeRem = self.__separate_chainRem
+            self.__probeGet = self.__separate_chainGet
         elif probingType == 1:
             self.__probeIns = self.__linear_probeIns
             self.__probeRem = self.__linear_probeRem
@@ -53,7 +53,7 @@ class Hashmap:
         return i
 
 
-    def __seperate_chainIns(self, item, searchkey):
+    def __separate_chainIns(self, item, searchkey):
         ''' insert an item into the given doubly linked
         chain if the given item isn't a linked chain yet
         a new linked chain will be created.'''
@@ -76,7 +76,7 @@ class Hashmap:
         return True
 
 
-    def __seperate_chainRem(self, searchkey):
+    def __separate_chainRem(self, searchkey):
         ''' Removes the item with the given searchkey from a
         linked chain if the chain only contains one item
         afterwards it will be turned into an item again. '''
@@ -93,7 +93,7 @@ class Hashmap:
             self.__table[self.__h(searchkey)] = self.__item(0, None)
 
 
-    def __seperate_chainGet(self, searchkey):
+    def __separate_chainGet(self, searchkey):
         ''' returns the item with the specified searchkey ''' 
         if isinstance(self.__table[self.__h(searchkey)], 
                       type(doubly_linked_chain.Doubly_linked_chain())):
