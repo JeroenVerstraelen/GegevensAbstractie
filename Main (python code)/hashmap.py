@@ -186,12 +186,15 @@ class Hashmap:
         ''' Insert an item to the table if the position
         is already taken the item will be placed to the
         next open place in quadratic steps. '''
-        i = self.__h(searchkey)
-        while self.__table[self.__h(i)].searchkey != None:
-            i= i**2
-            if self.__h(i) > self.__tableSize-1:
+        index = self.__h(searchkey)
+        j = 1 # parameter for quadratic probing
+        while self.__table[self.__h(index)].searchkey != None:
+            i = (self.__h(searchkey) + j*j) % self.__tableSize
+
+            j += 1
+            if j > self.__tableSize:
                 return False
-        self.__table[self.__h(i)] = self.__item(item,searchkey)
+        self.__table[self.__h(index)] = self.__item(item,searchkey)
 
 
     def __quadratic_probeRem(self, searchkey):
@@ -232,13 +235,14 @@ class Hashmap:
 
     def __quadratic_probeGet(self, searchkey):
         ''' Returns the item that equals the given searchkey going in aquare steps. '''
-        i = self.__h(searchkey)
-        while self.__table[self.__h(i)].searchkey != None:
-            
-            if self.__table[self.__h(i)].searchkey == searchkey:
-                return self.__table[self.__h(i)].item
-            i = i**2
-            if self.__h(i) >= self.__tableSize-1:
+        index = self.__h(searchkey)
+        j = 1 # parameter for quadratic probing
+        while self.__table[self.__h(index)].searchkey != None:
+            if self.__table[self.__h(index)].searchkey == searchkey:
+                return self.__table[self.__h(index)].item
+            i = (self.__h(searchkey) + j*j) % self.__tableSize
+            j += 1
+            if j > self.__tableSize-1:
                 return False
         return False
 
@@ -268,7 +272,8 @@ class Hashmap:
                                                                  searchkey)
         else:
             succes = self.__probeIns(item, searchkey)
-        self.__length += 1
+        if succes:
+            self.__length += 1
         return succes
 
     def getItem(self, searchkey):
@@ -312,14 +317,15 @@ class Hashmap:
         If the place is occupied but doesn't equal the
         searchkey the remove method of the given probe type will be called.'''
         if isinstance(self.__table[self.__h(searchkey)], type(doubly_linked_chain.Doubly_linked_chain())):
-            self.__probeRem(searchkey)
+            success = self.__probeRem(searchkey)
         elif self.__table[self.__h(searchkey)].searchkey == None:
             return False 
         elif self.__table[self.__h(searchkey)].searchkey == searchkey:
-            self.__probeRem(searchkey)    
+            success = self.__probeRem(searchkey)    
         else:
-            self.__probeRem(searchkey)       
-        self.__length -= 1
+            success = self.__probeRem(searchkey)       
+        if success:
+            self.__length -= 1
         return True
 
 
