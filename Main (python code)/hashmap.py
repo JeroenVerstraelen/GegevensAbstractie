@@ -83,7 +83,7 @@ class Hashmap:
         if isinstance(self.__table[self.__h(searchkey)], 
                       type(doubly_linked_chain.Doubly_linked_chain())):
             if self.__table[self.__h(searchkey)].length == 1:
-                self.__table[self.__h(searchkey)] = 0
+                self.__table[self.__h(searchkey)] = self.__item(0, None)
                 return
             self.__table[self.__h(searchkey)].remove(searchkey)
             if self.__table[self.__h(searchkey)].length == 1:
