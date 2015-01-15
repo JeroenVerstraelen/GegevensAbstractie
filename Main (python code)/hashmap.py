@@ -55,23 +55,19 @@ class Hashmap:
         ''' insert an item into the given doubly linked
         chain if the given item isn't a linked chain yet
         a new linked chain will be created.'''
-        if isinstance(self.__table[self.__h(searchkey)], 
-                      type(doubly_linked_chain.Doubly_linked_chain())):
-            for i in self.__table[self.__h(searchkey)].traverse():
-                # If the chain already contains an item with that searchkey.
-                if i.searchkey == searchkey:
-                    return False
-            self.__table[self.__h(searchkey)].insert(self.__item(item, 
-                                                     searchkey), searchkey)
+        hash = self.__h(searchkey)
+        if isinstance(self.__table[hash], self.__item):
+            self.__table[hash] = doubly_linked_chain.Doubly_linked_chain()
+            self.__table[hash].insert(searchkey,self.__item(item,searchkey))
         else:
-            temp = self.__table[self.__h(searchkey)]
-            if temp.searchkey == searchkey:
-                return False
-            self.__table[self.__h(searchkey)] = doubly_linked_chain.Doubly_linked_chain()
-            self.__table[self.__h(searchkey)].insert(temp, temp.searchkey)
-            self.__table[self.__h(searchkey)].insert(self.__item(item, 
-                                                     searchkey), searchkey)
-        return True
+            for i in self.__table[hash].traverse():
+                # If the chain already contains an item with that searchkey.
+                if i == searchkey:
+                    return False
+            return self.__table[hash].insert(searchkey,
+                                             self.__item(item,searchkey))
+        return False
+            
 
 
     def __separate_chainRem(self, searchkey):
@@ -83,14 +79,14 @@ class Hashmap:
         if isinstance(self.__table[self.__h(searchkey)], 
                       type(doubly_linked_chain.Doubly_linked_chain())):
             if self.__table[self.__h(searchkey)].length == 1:
-                self.__table[self.__h(searchkey)] = self.__item(0, None)
+                self.__table[self.__h(searchkey)] = self.__item(None, None)
                 return True
             self.__table[self.__h(searchkey)].remove(searchkey)
             if self.__table[self.__h(searchkey)].length == 1:
                 tmp = self.__table[self.__h(searchkey)].headPtr.next.item
                 self.__table[self.__h(searchkey)] = tmp     
         else:
-            self.__table[self.__h(searchkey)] = self.__item(0, None)
+            self.__table[self.__h(searchkey)] = self.__item(None, None)
         return True
 
 
@@ -98,13 +94,13 @@ class Hashmap:
         ''' returns the item with the specified searchkey ''' 
         if isinstance(self.__table[self.__h(searchkey)], 
                       type(doubly_linked_chain.Doubly_linked_chain())):
-            tmp = self.__table[self.__h(searchkey)].getNode(searchkey)
-            if not tmp:
+            tmp = self.__table[self.__h(searchkey)].getItem(searchkey)
+            if tmp == False:
                 return False
             else:
-                return tmp.item.item
+                return tmp.item
         else:
-            return self.__table[self.__h(searchkey)].item
+            return False #self.__table[self.__h(searchkey)].item
         
 
     def __linear_probeIns(self, item, searchkey):
@@ -174,7 +170,7 @@ class Hashmap:
         j = 1 # parameter for quadratic probing
         while self.__table[self.__h(index)].searchkey != None:
             if self.__table[self.__h(index)].searchkey == searchkey:
-                self.__table[self.__h(index)] = self.__item(0,None)
+                self.__table[self.__h(index)] = self.__item(None,None)
             i = (self.__h(searchkey) + j*j) % self.__tableSize
             j += 1
             if j > self.__tableSize-1:
@@ -214,18 +210,10 @@ class Hashmap:
         ''' insert an item to the table if the place is
         already occupied the insert method of the chosen
         probe type will be called.'''
-        succes = False
-        if isinstance(self.__table[self.__h(searchkey)], 
-                      type(doubly_linked_chain.Doubly_linked_chain())):
-            success = self.__probeIns(item, searchkey)
-        elif self.__table[self.__h(searchkey)].searchkey == None:           
-            self.__table[self.__h(searchkey)] = self.__item(item, searchkey)
-            success = True
-        else:
-            success = self.__probeIns(item, searchkey)
-        if success:
+        if self.__probeIns(item, searchkey):
             self.length += 1
-        return success
+            return True
+        return False
 
     def getItem(self, searchkey):
         ''' Calls the get method of the given probe type. '''

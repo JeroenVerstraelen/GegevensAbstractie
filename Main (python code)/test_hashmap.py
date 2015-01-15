@@ -53,11 +53,11 @@ def removeitems(map0):
     map0.remove(19)
     map0.remove(20)
     map0.remove(1000)
-    map0.remove(9999999999999999999) # twenty 9's
+    map0.remove(99999999999999999999) # twenty 9's
 
 # run some basic checks; printing out everything that is being done so the results can be verified
 def runchecks(map0):
-    print("getting item 0 (should never exist):")
+    print("getting item 0 (should not exist):")
     print(map0.getItem(0))
     print("getting item 10:")
     print(map0.getItem(10))
