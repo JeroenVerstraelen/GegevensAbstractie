@@ -91,6 +91,22 @@ class Redblacktree:
                 node = node.rightchild
         if node.key == key: return node.key    #only return the item if the keys match
         else: return None
+
+    def searchInternal(self,key,node=None):    
+        '''
+        searches for a searchkey in the tree and returns the item if it's included in the tree, otherwise returns None
+        can be called with a node to search only the subtrees of that node
+        if no node is entered the default node is the root of the tree
+        '''
+        if None == node:
+            node = self.root
+        while node != self.dummy and key != node.key:    #search until the end of the tree or until the key is found
+            if key < node.key:
+                node = node.leftchild
+            else:
+                node = node.rightchild
+        if node.key == key: return node    #only return the item if the keys match
+        else: return None
     
     def insert(self,key,item):
         '''
@@ -125,11 +141,12 @@ class Redblacktree:
         deletes a node from the tree
         if the entered key doesn't exist in the red-black tree, returns an error
         '''
-        the_node = self.search(key)    #search for the node that matches the key
+        the_node = self.searchInternal(key)    #search for the node that matches the key
         if the_node == None:        #error if the node doesn't exist
             print("error: the node to delete doesn't exist")
             return
         helpingnode = self.dummy
+
         node = the_node
         if node.rightchild == self.dummy:#if the node does not have an inOrder succesor it can easily be deleted by connecting the left child to the parent, if the node doesn't have a left child self.dummy will be linked, so there are no special cases for this
             if node == node.parent.rightchild:    #find out if the node is its' parent's left or right child, link the left child, and delete the node
@@ -234,8 +251,9 @@ class Redblacktree:
     def getLength(self):
         list = self.inOrderTraversal()
         length = len(list)
-        if length == 1 and list[0].key == None:
-            return 0
+        if length == 1:
+            if list[0] == None:
+                return 0
         return length
 
     def isEmpty(self):
