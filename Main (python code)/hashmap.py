@@ -200,37 +200,49 @@ class Hashmap:
     def __quadratic_probeRem(self, searchkey):
         ''' Removes the item with the given searchkey from the table
         going in square steps. '''
-        def getNext(self, searchkey, i):
-            while self.__table[self.__h(i)].searchkey != None:
-                if (self.__table[self.__h(i)].searchkey == searchkey and
-                   self.__h(self.__table[self.__h(i)].searchkey) ==
-                   self.__h(searchkey)):
-                    i = i**2
-                    continue
-                if (self.__h(self.__table[self.__h(i)].searchkey) == 
-                                                     self.__h(searchkey)):
-                    return self.__table[self.__h(i)]
-                i = i**2
-                
-            return False
+        index = self.__h(searchkey)
+        j = 1 # parameter for quadratic probing
+        while self.__table[self.__h(index)].searchkey != None:
+            if self.__table[self.__h(index)].searchkey == searchkey:
+                self.__table[self.__h(index)] = self.__item(0,None)
+            i = (self.__h(searchkey) + j*j) % self.__tableSize
+            j += 1
+            if j > self.__tableSize-1:
+                return False
+        self.rebuild()
 
-        
-        i = self.__h(searchkey)
-        while self.__table[self.__h(i)].searchkey != None:
-            
-            if self.__table[self.__h(i)].searchkey == searchkey:
-                tmp = getNext(self,searchkey, i)
-                if tmp == -1:
-                    self.__table[self.__h(i)] = self.__item(0,None)
-                    return
-                while tmp != -1:
-                    self.__table[self.__h(i)] = tmp
-                    tmp = getNext(self, self.__table[self.__h(i)].searchkey, i)
-                    i = i**2
-                    if self.__h(i) > self.__tableSize-1:
-                        return False
-                self.__table[self.__h(i)] = self.__item(0, None)
-            i = i**2
+       
+        #def getNext(self, searchkey, i):
+        #    while self.__table[self.__h(i)].searchkey != None:
+        #        if (self.__table[self.__h(i)].searchkey == searchkey and
+        #           self.__h(self.__table[self.__h(i)].searchkey) ==
+        #           self.__h(searchkey)):
+        #            i = i**2
+        #            continue
+        #        if (self.__h(self.__table[self.__h(i)].searchkey) == 
+        #                                             self.__h(searchkey)):
+        #            return self.__table[self.__h(i)]
+        #        i = i**2
+        #        
+        #    return False
+
+        #
+        #i = self.__h(searchkey)
+        #while self.__table[self.__h(i)].searchkey != None:
+        #    
+        #    if self.__table[self.__h(i)].searchkey == searchkey:
+        #        tmp = getNext(self,searchkey, i)
+        #        if tmp == -1:
+        #            self.__table[self.__h(i)] = self.__item(0,None)
+        #            return
+        #        while tmp != -1:
+        #            self.__table[self.__h(i)] = tmp
+        #            tmp = getNext(self, self.__table[self.__h(i)].searchkey, i)
+        #            i = i**2
+        #            if self.__h(i) > self.__tableSize-1:
+        #                return False
+        #        self.__table[self.__h(i)] = self.__item(0, None)
+        #    i = i**2
 
 
     def __quadratic_probeGet(self, searchkey):
@@ -303,6 +315,12 @@ class Hashmap:
                 ret_list.append(item.searchkey)
             i+=1
         return ret_list
+
+    def rebuild(self):
+        ''' Rebuild the hashmap to fix compromised structure '''
+        contents = self.traverse()
+        for item in contents:
+            self.insert(item, item.searchkey)
 
     def rec_quadtraverse(self, j):
         ret_list = []
