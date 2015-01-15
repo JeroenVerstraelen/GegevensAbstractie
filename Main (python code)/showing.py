@@ -16,7 +16,7 @@ class Showing:
         self.empty_ts = datetime.now()
 
     def setID(self, ID):
-        self.ID = ID
+        self.ID = int(ID)
 
     def setScreenID(self, screenID):
         self.screenID = screenID
