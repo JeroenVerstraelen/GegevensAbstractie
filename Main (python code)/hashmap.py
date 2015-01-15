@@ -59,6 +59,7 @@ class Hashmap:
         if isinstance(self.__table[hash], self.__item):
             self.__table[hash] = doubly_linked_chain.Doubly_linked_chain()
             self.__table[hash].insert(searchkey,self.__item(item,searchkey))
+            return True
         else:
             for i in self.__table[hash].traverse():
                 # If the chain already contains an item with that searchkey.
@@ -100,7 +101,7 @@ class Hashmap:
             else:
                 return tmp.item
         else:
-            return False #self.__table[self.__h(searchkey)].item
+            return False
         
 
     def __linear_probeIns(self, item, searchkey):
@@ -245,7 +246,9 @@ class Hashmap:
 
     def rebuild(self):
         ''' Rebuild the hashmap to fix compromised structure '''
-        def traverse():
+        # redefining traverse: only difference is we return internal item
+        # objects instead of the actual items (to have access to the key)
+        def traverse(): 
             ''' Returns a list of the items in the hashmap '''
             ret_list = []
             i = 0
@@ -289,7 +292,6 @@ class Hashmap:
         else:
             success = self.__probeRem(searchkey)       
         if success:
-            self.length -= 1
             return True
         return False
 
