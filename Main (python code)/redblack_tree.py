@@ -67,7 +67,6 @@ class Redblacktree:
                 ret_list.extend(node.leftchild.inOrderTraversal(node.leftchild))
             if None != node.key and node != None:
                 ret_list.append(node.key)
-                ret_list.append(node.red)
             if node.rightchild != None:
                 ret_list.extend(node.rightchild.inOrderTraversal(node.rightchild))
             return ret_list
