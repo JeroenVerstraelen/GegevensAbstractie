@@ -13,8 +13,7 @@ class Hashmap:
         self.__tableSize = self.__getMapSize(size)
         self.__table = []
         for i in range(self.__tableSize):
-            self.__table.append(self.__item(0, None))
-        
+            self.__table.append(self.__item(None, None))
         if probingType == 0:
             self.__probeIns = self.__separate_chainIns
             self.__probeRem = self.__separate_chainRem
@@ -27,8 +26,7 @@ class Hashmap:
             self.__probeIns = self.__quadratic_probeIns
             self.__probeRem = self.__quadratic_probeRem
             self.__probeGet = self.__quadratic_probeGet
-
-        self.__length = 0
+        self.length = 0
 
 
     def __getMapSize(self,needed_size):
@@ -80,17 +78,20 @@ class Hashmap:
         ''' Removes the item with the given searchkey from a
         linked chain if the chain only contains one item
         afterwards it will be turned into an item again. '''
+        if not self.__separate_chainGet(searchkey):
+            return False
         if isinstance(self.__table[self.__h(searchkey)], 
                       type(doubly_linked_chain.Doubly_linked_chain())):
             if self.__table[self.__h(searchkey)].length == 1:
                 self.__table[self.__h(searchkey)] = self.__item(0, None)
-                return
+                return True
             self.__table[self.__h(searchkey)].remove(searchkey)
             if self.__table[self.__h(searchkey)].length == 1:
                 tmp = self.__table[self.__h(searchkey)].headPtr.next.item
                 self.__table[self.__h(searchkey)] = tmp     
         else:
             self.__table[self.__h(searchkey)] = self.__item(0, None)
+        return True
 
 
     def __separate_chainGet(self, searchkey):
@@ -123,63 +124,31 @@ class Hashmap:
 
     def __linear_probeRem(self, searchkey):
         ''' checks the higher positions in the table and removes the first
-        item that equals the given searchkey. Closes the gap in the line
-        afterwards. '''
-        def getNext(self, searchkey, i):
-            ''' get the next item in line that should be at the position
-            hashed by the searchkey '''
-            while self.__table[self.__h(searchkey)+i].searchkey != None:
-                
-                if (self.__table[self.__h(searchkey)+i].searchkey == 
-                        searchkey and 
-                        self.__h(self.__table[self.__h(searchkey) +
-                        i].searchkey) == self.__h(searchkey)):
-                    i+=1
-                    continue
-                if (self.__h(self.__table[self.__h(searchkey) + 
-                    i].searchkey) == self.__h(searchkey)):
-                    return self.__table[self.__h(searchkey)+i]
-                i+=1
-                
-            return False
+        item that equals the given searchkey. Rebuild afterwards. '''
         i = 0
         while self.__table[self.__h(searchkey)+i].searchkey != None:
             if self.__table[self.__h(searchkey)+i].searchkey == searchkey:
-                tmp = getNext(self,searchkey, i)
-                if tmp == False:
-                    self.__table[self.__h(searchkey)+i] =self.__item(0,None)
-                    return True
-                while tmp != False:
-                    self.__table[self.__h(searchkey)+i] = tmp
-                    tmp = getNext(self, self.__table[self.__h(searchkey)+i].searchkey, i)
-                    i+=1
-                    if self.__h(searchkey)+i > self.__tableSize-1:
-                        i = 0 - self.__h(searchkey)
-                    if i == 0:
-                    # This means we went full circle, so our hashmap is full
-                        return False
-
-                self.__table[self.__h(searchkey)+i] = self.__item(0, None)
+                self.__table[self.__h(searchkey)+i] = self.__item(None,None)
+                self.rebuild()
+                return True
             i+=1
-            if self.__h(searchkey)+i > self.__tableSize-1:
+            if self.__h(searchkey)+i >= self.__tableSize:
                 i = 0 - self.__h(searchkey)
-            if i == 0:
+            if i == 0: 
             # This means we went full circle, so our hashmap is full
                 return False
-
-
+        return False
+        
 
     def __linear_probeGet(self, searchkey):
         ''' gets an item that equals the given searchkey '''
         i = 0
         while self.__table[self.__h(searchkey)+i].searchkey != None:
-            
             if self.__table[self.__h(searchkey)+i].searchkey == searchkey:
                 return self.__table[self.__h(searchkey)+i].item
             i+=1
             if self.__h(searchkey)+i >= self.__tableSize-1:
                 return False
-            
         return False
    
 
@@ -189,13 +158,13 @@ class Hashmap:
         next open place in quadratic steps. '''
         index = self.__h(searchkey)
         j = 1 # parameter for quadratic probing
-        while self.__table[self.__h(index)].searchkey != None:
-            i = (self.__h(searchkey) + j*j) % self.__tableSize
-
+        while self.__table[index].searchkey != None:
+            index = (self.__h(searchkey) + j*j) % self.__tableSize
             j += 1
             if j > self.__tableSize:
                 return False
-        self.__table[self.__h(index)] = self.__item(item,searchkey)
+        self.__table[index] = self.__item(item,searchkey)
+        return True
 
 
     def __quadratic_probeRem(self, searchkey):
@@ -211,39 +180,8 @@ class Hashmap:
             if j > self.__tableSize-1:
                 return False
         self.rebuild()
+        return True
 
-       
-        #def getNext(self, searchkey, i):
-        #    while self.__table[self.__h(i)].searchkey != None:
-        #        if (self.__table[self.__h(i)].searchkey == searchkey and
-        #           self.__h(self.__table[self.__h(i)].searchkey) ==
-        #           self.__h(searchkey)):
-        #            i = i**2
-        #            continue
-        #        if (self.__h(self.__table[self.__h(i)].searchkey) == 
-        #                                             self.__h(searchkey)):
-        #            return self.__table[self.__h(i)]
-        #        i = i**2
-        #        
-        #    return False
-
-        #
-        #i = self.__h(searchkey)
-        #while self.__table[self.__h(i)].searchkey != None:
-        #    
-        #    if self.__table[self.__h(i)].searchkey == searchkey:
-        #        tmp = getNext(self,searchkey, i)
-        #        if tmp == -1:
-        #            self.__table[self.__h(i)] = self.__item(0,None)
-        #            return
-        #        while tmp != -1:
-        #            self.__table[self.__h(i)] = tmp
-        #            tmp = getNext(self, self.__table[self.__h(i)].searchkey, i)
-        #            i = i**2
-        #            if self.__h(i) > self.__tableSize-1:
-        #                return False
-        #        self.__table[self.__h(i)] = self.__item(0, None)
-        #    i = i**2
 
 
     def __quadratic_probeGet(self, searchkey):
@@ -286,7 +224,7 @@ class Hashmap:
         else:
             success = self.__probeIns(item, searchkey)
         if success:
-            self.__length += 1
+            self.length += 1
         return success
 
     def getItem(self, searchkey):
@@ -300,7 +238,7 @@ class Hashmap:
         self.__probeIns = None
         self.__probeRem = None
         self.__probeGet = None
-        self.__length = 0
+        self.length = 0
 
     def traverse(self):
         ''' Returns a list of the items in the hashmap '''
@@ -319,7 +257,27 @@ class Hashmap:
 
     def rebuild(self):
         ''' Rebuild the hashmap to fix compromised structure '''
-        contents = self.traverse()
+        def traverse():
+            ''' Returns a list of the items in the hashmap '''
+            ret_list = []
+            i = 0
+            j = 0
+            while i < self.getTableSize():
+                item = self.__table[self.__h(i)]
+                if isinstance(item, type(doubly_linked_chain.Doubly_linked_chain())):
+                    for di in item.traverse():
+                        ret_list.append(di.searchkey)
+                elif not item.searchkey == None:
+                    ret_list.append(item)
+                i+=1
+            return ret_list
+        contents = traverse()
+        # Dropping table and resetting length
+        self.__table = []
+        for i in range(self.__tableSize):
+            self.__table.append(self.__item(None, None))
+        self.length = 0
+        # inserting all our items again
         for item in contents:
             self.insert(item, item.searchkey)
 
@@ -333,24 +291,24 @@ class Hashmap:
 
     def remove(self,searchkey):
         ''' removes the item with the given searchkey.
-        If the place is occupied but doesn't equal the
-        searchkey the remove method of the given probe type will be called.'''
+        If the place is occupied but doesn't equal the searchkey the 
+        remove method of the given probe type will be called.'''
+        success = False
         if isinstance(self.__table[self.__h(searchkey)], type(doubly_linked_chain.Doubly_linked_chain())):
             success = self.__probeRem(searchkey)
         elif self.__table[self.__h(searchkey)].searchkey == None:
             return False 
-        elif self.__table[self.__h(searchkey)].searchkey == searchkey:
-            success = self.__probeRem(searchkey)    
         else:
             success = self.__probeRem(searchkey)       
         if success:
-            self.__length -= 1
-        return True
+            self.length -= 1
+            return True
+        return False
 
 
     def isEmpty(self):
         ''' Returns true if the table is empty or false if not. '''
-        if self.__length == 0:
+        if self.length == 0:
             return True
         else:
             return False
@@ -363,7 +321,7 @@ class Hashmap:
 
     def getLength(self):
         ''' returns the number of elements in the table '''
-        return self.__length
+        return self.length
 
 
     class __item:

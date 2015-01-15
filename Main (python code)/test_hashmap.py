@@ -32,28 +32,28 @@ def additems(map0):
 # a function to remove all of the previously added items
 def removeitems(map0):
     print("Removing items 1 through 20, 1000 and 99999999999999999999")
-    map0.remove("one")
-    map0.remove("two")
-    map0.remove("three")
-    map0.remove("four")
-    map0.remove("five")
-    map0.remove("six")
-    map0.remove("seven")
-    map0.remove("eight")
-    map0.remove("nine")
-    map0.remove("ten")
-    map0.remove("eleven")
-    map0.remove("twelve")
-    map0.remove("thirteen")
-    map0.remove("fourteen")
-    map0.remove("fifteen")
-    map0.remove("sixteen")
-    map0.remove("seventeen")
-    map0.remove("eightteen")
-    map0.remove("nineteen")
-    map0.remove("twenty")
-    map0.remove("one thousand")
-    map0.remove("a lot") # twenty 9's
+    map0.remove(1)
+    map0.remove(2)
+    map0.remove(3)
+    map0.remove(4)
+    map0.remove(5)
+    map0.remove(6)
+    map0.remove(7)
+    map0.remove(8)
+    map0.remove(9)
+    map0.remove(10)
+    map0.remove(11)
+    map0.remove(12)
+    map0.remove(13)
+    map0.remove(14)
+    map0.remove(15)
+    map0.remove(16)
+    map0.remove(17)
+    map0.remove(18)
+    map0.remove(19)
+    map0.remove(20)
+    map0.remove(1000)
+    map0.remove(9999999999999999999) # twenty 9's
 
 # run some basic checks; printing out everything that is being done so the results can be verified
 def runchecks(map0):
@@ -70,7 +70,7 @@ def runchecks(map0):
 
 # create a hashmap with seperate chaining
 print("\ntesting map with seperate chaining")
-map1 = hashmap.Hashmap(10, 0)
+map1 = hashmap.Hashmap(100, 0)
 runchecks(map1)
 additems(map1)
 runchecks(map1)
@@ -80,7 +80,7 @@ runchecks(map1)
 
 # create a hashmap with linear probing
 print("\ntesting map with linear probing")
-map2 = hashmap.Hashmap(10, 1)
+map2 = hashmap.Hashmap(100, 1)
 runchecks(map2)
 additems(map2)
 runchecks(map2)
@@ -91,7 +91,7 @@ runchecks(map2)
 
 # create a hashmap with quadratic probing
 print("\ntesting map with quadratic probing")
-map3 = hashmap.Hashmap(10, 2)
+map3 = hashmap.Hashmap(100, 2)
 runchecks(map3)
 additems(map3)
 runchecks(map3)
