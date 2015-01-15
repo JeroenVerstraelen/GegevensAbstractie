@@ -268,8 +268,8 @@ class Hashmap:
                       type(doubly_linked_chain.Doubly_linked_chain())):
             succes = self.__probeIns(item, searchkey)
         elif self.__table[self.__h(searchkey)].searchkey == None:           
-            succes = self.__table[self.__h(searchkey)] = self.__item(item,
-                                                                 searchkey)
+            self.__table[self.__h(searchkey)] = self.__item(item, searchkey)
+            success = True
         else:
             succes = self.__probeIns(item, searchkey)
         if succes:
